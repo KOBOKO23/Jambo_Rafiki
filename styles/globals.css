@@ -1,0 +1,381 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* ========================================
+   IMAGE ANIMATIONS & EFFECTS
+   ======================================== */
+
+@layer utilities {
+  /* Fade-in animation for images on load */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes zoomIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes floatAnimation {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  /* Base image styles with loading animation */
+  img {
+    @apply transition-opacity duration-500;
+  }
+
+  .img-lazy-reveal {
+    @apply opacity-0;
+  }
+
+  .img-lazy-reveal.loaded {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  /* Hover Effects */
+  .img-hover-zoom {
+    @apply transition-transform duration-500 ease-in-out overflow-hidden;
+  }
+
+  .img-hover-zoom img {
+    @apply transition-transform duration-500 ease-in-out;
+  }
+
+  .img-hover-zoom:hover img {
+    @apply scale-110;
+  }
+
+  .img-hover-lift {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  .img-hover-lift:hover {
+    @apply -translate-y-2 shadow-xl;
+  }
+
+  .img-hover-grow {
+    @apply transition-all duration-500 ease-in-out;
+  }
+
+  .img-hover-grow:hover {
+    @apply scale-105 shadow-lg;
+  }
+
+  .img-hover-tilt {
+    @apply transition-transform duration-500 ease-in-out;
+  }
+
+  .img-hover-tilt:hover {
+    @apply -rotate-2 scale-105;
+  }
+
+  .img-hover-pulse {
+    @apply transition-all duration-500 ease-in-out;
+  }
+
+  .img-hover-pulse:hover {
+    @apply scale-105 opacity-90;
+  }
+
+  .img-hover-brightness {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  .img-hover-brightness:hover {
+    filter: brightness(1.1) contrast(1.05);
+  }
+
+  .img-hover-grayscale {
+    @apply transition-all duration-500 ease-in-out;
+    filter: grayscale(100%);
+  }
+
+  .img-hover-grayscale:hover {
+    filter: grayscale(0%);
+  }
+
+  /* Loading Animations */
+  .img-fade-in {
+    animation: fadeIn 0.6s ease-out;
+  }
+
+  .img-slide-left {
+    animation: slideInLeft 0.8s ease-out;
+  }
+
+  .img-slide-right {
+    animation: slideInRight 0.8s ease-out;
+  }
+
+  .img-zoom-in {
+    animation: zoomIn 0.6s ease-out;
+  }
+
+  .img-float {
+    animation: floatAnimation 3s ease-in-out infinite;
+  }
+
+  /* Staggered animation delays for multiple images */
+  .img-delay-1 {
+    animation-delay: 0.1s;
+  }
+
+  .img-delay-2 {
+    animation-delay: 0.2s;
+  }
+
+  .img-delay-3 {
+    animation-delay: 0.3s;
+  }
+
+  .img-delay-4 {
+    animation-delay: 0.4s;
+  }
+
+  .img-delay-5 {
+    animation-delay: 0.5s;
+  }
+
+  /* Image container with overlay effect */
+  .img-overlay-container {
+    @apply relative overflow-hidden;
+  }
+
+  .img-overlay-container::after {
+    content: '';
+    @apply absolute inset-0 bg-black/0 transition-all duration-300;
+  }
+
+  .img-overlay-container:hover::after {
+    @apply bg-black/20;
+  }
+
+  /* Rounded image styles */
+  .img-rounded-soft {
+    @apply rounded-lg overflow-hidden;
+  }
+
+  .img-rounded-full {
+    @apply rounded-full overflow-hidden;
+  }
+
+  /* Shadow effects */
+  .img-shadow-soft {
+    @apply shadow-md hover:shadow-xl transition-shadow duration-300;
+  }
+
+  .img-shadow-glow {
+    @apply shadow-lg hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300;
+  }
+
+  /* Border animations */
+  .img-border-animate {
+    @apply relative;
+  }
+
+  .img-border-animate::before {
+    content: '';
+    @apply absolute -inset-1 bg-gradient-to-r from-primary to-primary/50 rounded-lg opacity-0 transition-opacity duration-300;
+    z-index: -10;
+  }
+
+  .img-border-animate:hover::before {
+    @apply opacity-100;
+  }
+
+  /* Parallax effect (use with JS) */
+  .img-parallax {
+    @apply transition-transform duration-100 ease-out;
+  }
+
+  /* Card image styles */
+  .card-img-top {
+    @apply w-full h-48 object-cover rounded-t-lg;
+  }
+
+  .card-img-full {
+    @apply w-full h-64 object-cover;
+  }
+
+  /* Profile/Team images */
+  .profile-img {
+    @apply w-32 h-32 rounded-full object-cover shadow-lg transition-all duration-500 ease-in-out;
+  }
+
+  .profile-img:hover {
+    @apply scale-105 shadow-lg;
+  }
+
+  .profile-img-lg {
+    @apply w-48 h-48 rounded-full object-cover shadow-xl transition-all duration-500 ease-in-out;
+  }
+
+  .profile-img-lg:hover {
+    @apply scale-105 shadow-lg;
+  }
+
+  /* Gallery grid images */
+  .gallery-img {
+    @apply w-full h-full object-cover transition-all duration-500 hover:scale-110;
+  }
+
+  /* Hero images */
+  .hero-img {
+    @apply w-full h-full object-cover;
+  }
+
+  /* Image loading skeleton */
+  .img-skeleton {
+    @apply bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-pulse;
+    background-size: 200% 100%;
+  }
+
+  /* Image grid patterns */
+  .img-grid-2 {
+    @apply grid grid-cols-2 gap-4;
+  }
+
+  .img-grid-3 {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+  }
+
+  .img-grid-4 {
+    @apply grid grid-cols-2 lg:grid-cols-4 gap-4;
+  }
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    /* Safari-safe calc() syntax */
+    transform: translateX(calc((-320px - 24px) * 12));
+  }
+}
+
+.animate-scroll-left {
+  animation: scroll-left 60s linear infinite;
+}
+
+.animate-scroll-left:hover {
+  animation-play-state: paused;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  img,
+  .img-hover-zoom,
+  .img-hover-lift,
+  .img-hover-grow,
+  .img-hover-tilt,
+  .img-hover-pulse,
+  .img-hover-brightness,
+  .img-hover-grayscale,
+  .img-fade-in,
+  .img-slide-left,
+  .img-slide-right,
+  .img-zoom-in,
+  .img-float {
+    animation: none !important;
+    transition: none !important;
+  }
+}
