@@ -23,7 +23,7 @@ function firstEnv(...names: string[]) {
   return '';
 }
 
-function requireApiUrl() {
+function resolveApiUrl() {
   const value = firstEnv('VITE_API_BASE_URL', 'VITE_API_URL');
   if (value) {
     return value;
@@ -33,20 +33,17 @@ function requireApiUrl() {
     return 'http://localhost:8000/api/v1';
   }
 
-  throw new Error('VITE_API_BASE_URL (or VITE_API_URL) is required');
+  // Keep production app renderable even if env is missing.
+  return '/api/v1';
 }
 
-function requireStripeKey() {
+function resolveStripeKey() {
   const value = firstEnv('VITE_STRIPE_KEY');
   if (value) {
     return value;
   }
 
-  if (import.meta.env.DEV || isTestMode()) {
-    return '';
-  }
-
-  throw new Error('VITE_STRIPE_KEY is required');
+  return '';
 }
 
 function parseBoolean(value: string | undefined, fallback: boolean) {
@@ -60,8 +57,8 @@ function parseBoolean(value: string | undefined, fallback: boolean) {
 
 export function getRuntimeEnv(): RuntimeEnv {
   return {
-    apiUrl: requireApiUrl(),
-    stripeKey: requireStripeKey(),
+    apiUrl: resolveApiUrl(),
+    stripeKey: resolveStripeKey(),
     enableCredentials: parseBoolean(import.meta.env.VITE_ENABLE_CREDENTIALS, true),
   };
 }
@@ -71,6 +68,17 @@ export function validateRuntimeEnv() {
     return;
   }
 
-  // Fail fast during production startup if required config is missing.
-  getRuntimeEnv();
+  const problems: string[] = [];
+
+  if (!firstEnv('VITE_API_BASE_URL', 'VITE_API_URL')) {
+    problems.push('Missing VITE_API_BASE_URL (or VITE_API_URL). Falling back to /api/v1.');
+  }
+
+  if (!firstEnv('VITE_STRIPE_KEY')) {
+    problems.push('Missing VITE_STRIPE_KEY. Card donations will be unavailable.');
+  }
+
+  if (problems.length > 0) {
+    console.warn('[runtimeEnv] Production environment warnings:\n- ' + problems.join('\n- '));
+  }
 }
