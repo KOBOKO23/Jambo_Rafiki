@@ -47,6 +47,9 @@ Purpose: executive technical snapshot, risk posture, and launch decision gates.
 12. 12-OnCall-Quick-Reference.md
 Purpose: incident triage, fast commands, rollback cues, and response templates.
 
+13. 13-Admin-Dashboard-Guide.md
+Purpose: admin route access, module capabilities, operational actions, and backend dependency checklist.
+
 ## Quick start for new owners
 
 1. Read 10-Takeover-Checklist.md.
