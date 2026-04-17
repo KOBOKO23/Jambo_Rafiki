@@ -1,4 +1,38 @@
+import { useEffect, useState } from 'react';
+import { api, type OrganizationConfig } from '@/services/api';
+
+const fallbackExecutiveImage = '/images/IMG_1537.webp';
+const fallbackInternationalImage = '/images/international.jpeg';
+
 export default function DirectorSection() {
+  const [organization, setOrganization] = useState<OrganizationConfig | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function loadOrganization() {
+      try {
+        const response = await api.organization.get<OrganizationConfig>();
+        if (mounted) {
+          setOrganization(response);
+        }
+      } catch {
+        if (mounted) {
+          setOrganization(null);
+        }
+      }
+    }
+
+    void loadOrganization();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const executiveImage = organization?.director_executive_image_url || fallbackExecutiveImage;
+  const internationalImage = organization?.director_international_image_url || fallbackInternationalImage;
+
   return (
     <section className="py-20 bg-gradient-to-br from-yellow-50 via-orange-50 to-pink-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -12,7 +46,7 @@ export default function DirectorSection() {
               <div className="absolute -inset-6 bg-gradient-to-br from-orange-100 to-pink-100 rounded-full blur-3xl opacity-25"></div>
 
               <img
-                src="/images/IMG_1537.webp"
+                src={executiveImage}
                 alt="Mr. Benjamin Oyoo Ondoro - Executive Director & Founder"
                 className="relative w-80 h-80 lg:w-96 lg:h-96 object-cover rounded-2xl border-4 border-white shadow-2xl"
               />
@@ -64,7 +98,7 @@ export default function DirectorSection() {
               <div className="absolute -inset-6 bg-gradient-to-br from-orange-100 to-pink-100 rounded-full blur-3xl opacity-25"></div>
 
               <img
-                src="/images/international.jpeg" 
+                src={internationalImage}
                 alt="JM - International Director"
                 className="relative w-80 h-80 lg:w-96 lg:h-96 object-cover rounded-2xl border-4 border-white shadow-2xl"
               />

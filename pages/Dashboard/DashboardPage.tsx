@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, Route, Routes } from 'react-router-dom';
-import { BellRing, CalendarCheck2, Eye, FileText, GalleryHorizontalEnd, LayoutDashboard, Loader2, MessageSquareText, Sparkles, Users, DollarSign } from 'lucide-react';
+import { BellRing, CalendarCheck2, Eye, FileText, GalleryHorizontalEnd, ImagePlus, LayoutDashboard, Loader2, MessageSquareText, Sparkles, UploadCloud, Users, DollarSign } from 'lucide-react';
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { AdminShell } from '@/components/dashboard/AdminShell';
 import { AdminResourcePage, type AdminColumn, type AdminResourceConfig } from '@/components/dashboard/AdminResourcePage';
@@ -42,6 +42,93 @@ function formatMoney(amount: string | number, currency = 'KES') {
     currency,
     maximumFractionDigits: 0,
   }).format(numeric);
+}
+
+function splitCommaList(value: string) {
+  return value
+    .split(',')
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+}
+
+function cleanCategoryLabel(value?: string | null) {
+  if (!value) return '';
+  return value.replace(/\s+[0-9a-f]{8}(?:\s*-\s*)?$/i, '').trim();
+}
+
+type ImageDestinationOption = {
+  value: string;
+  label: string;
+  helper: string;
+};
+
+const IMAGE_DESTINATION_GROUPS: Array<{ group: string; options: ImageDestinationOption[] }> = [
+  {
+    group: 'Home page',
+    options: [
+      { value: 'Home page / Hero section', label: 'Hero section', helper: 'Top hero banner image on the homepage.' },
+      { value: 'Home page / Featured Programs section', label: 'Featured Programs section', helper: 'Featured home cards that promote selected stories or programs.' },
+      { value: 'Home page / Programs section', label: 'Programs section', helper: 'Homepage program cards pulled from gallery photos.' },
+      { value: 'Home page / Recent Activities section', label: 'Recent Activities section', helper: 'Latest activity thumbnails on the home page.' },
+      { value: 'Home page / Stories of Hope section', label: 'Stories of Hope section', helper: 'Story cards that show children, volunteers, or impact moments.' },
+    ],
+  },
+  {
+    group: 'About page',
+    options: [
+      { value: 'About page / Director section', label: 'Director section', helper: 'Executive Director and International Director portraits.' },
+    ],
+  },
+  {
+    group: 'Gallery',
+    options: [
+      { value: 'Gallery page / Gallery grid', label: 'Gallery grid', helper: 'Public gallery cards, lightbox previews, and homepage fallback images.' },
+    ],
+  },
+  {
+    group: 'Library',
+    options: [
+      { value: 'CMS media', label: 'CMS media', helper: 'Reusable internal assets for staff to search and reuse later.' },
+    ],
+  },
+  {
+    group: 'Branding',
+    options: [
+      { value: 'Site branding / Logo', label: 'Logo', helper: 'Brand logo used in the public site header and identity areas.' },
+      { value: 'Site branding / Favicon', label: 'Favicon', helper: 'Browser tab icon and bookmark icon.' },
+    ],
+  },
+] as const;
+
+type ImageDestinationValue = ImageDestinationOption['value'];
+
+const IMAGE_DESTINATION_OPTIONS = IMAGE_DESTINATION_GROUPS.flatMap((group) => group.options);
+
+function getDestinationOption(value: string) {
+  return IMAGE_DESTINATION_OPTIONS.find((option) => option.value === value) ?? IMAGE_DESTINATION_OPTIONS[0];
+}
+
+function DashboardSectionCard({
+  eyebrow,
+  title,
+  description,
+  children,
+}: {
+  eyebrow: string;
+  title: string;
+  description: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="overflow-hidden rounded-[2rem] border border-orange-100 bg-white shadow-[0_20px_60px_rgba(251,146,60,0.08)]">
+      <div className="border-b border-orange-100/70 bg-[linear-gradient(135deg,rgba(255,247,237,0.95),rgba(255,237,213,0.65),rgba(253,242,248,0.72))] px-6 py-5">
+        <p className="text-xs uppercase tracking-[0.24em] text-orange-500">{eyebrow}</p>
+        <h3 className="mt-2 text-2xl font-bold text-slate-900">{title}</h3>
+        <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600">{description}</p>
+      </div>
+      <div className="p-6">{children}</div>
+    </section>
+  );
 }
 
 function StatusBadge({ status }: { status: string }) {
@@ -488,7 +575,341 @@ function NavigationModulePage() {
   );
 }
 
+function MediaUploadForm({ onUploaded }: { onUploaded: () => void }) {
+  const [form, setForm] = useState({
+    title: '',
+    altText: '',
+    caption: '',
+    destination: 'CMS media' as ImageDestinationValue,
+    tags: '',
+  });
+  const [file, setFile] = useState<File | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError('');
+    setSuccess('');
+
+    if (!file) {
+      setError('Choose an image file to upload.');
+      return;
+    }
+
+    setSaving(true);
+    try {
+      await api.admin.mediaAssets.create({
+        title: form.title.trim(),
+        file,
+        alt_text: form.altText.trim() || undefined,
+        caption: form.caption.trim() || undefined,
+        category: form.destination,
+        tags: splitCommaList(form.tags),
+      });
+
+      setSuccess('Media uploaded to CMS media.');
+      setForm({ title: '', altText: '', caption: '', destination: 'CMS media' as ImageDestinationValue, tags: '' });
+      setFile(null);
+      onUploaded();
+    } catch (uploadError) {
+      setError(uploadError instanceof Error ? uploadError.message : 'Unable to upload media.');
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4 rounded-[1.75rem] border border-orange-100 bg-white p-5 shadow-sm">
+      <div className="flex items-start gap-3 rounded-2xl bg-gradient-to-r from-orange-50 to-pink-50 px-4 py-3 text-sm text-slate-700">
+        <UploadCloud className="mt-0.5 h-5 w-5 text-orange-500" />
+        <p>Choose the exact destination first, then add tags if you want the file to be searchable or reusable later.</p>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <label className="space-y-2 text-sm font-medium text-slate-700">
+          <span>Title</span>
+          <input
+            value={form.title}
+            onChange={(event) => setForm((prev) => ({ ...prev, title: event.target.value }))}
+            required
+            placeholder="Example: Director portrait"
+            className="w-full rounded-2xl border border-orange-100 bg-white px-4 py-3 text-slate-900 outline-none transition-colors placeholder:text-slate-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+          />
+        </label>
+
+        <label className="space-y-2 text-sm font-medium text-slate-700">
+          <span>Destination</span>
+          <select
+            value={form.destination}
+            onChange={(event) => setForm((prev) => ({ ...prev, destination: event.target.value as ImageDestinationValue }))}
+            className="w-full rounded-2xl border border-orange-100 bg-white px-4 py-3 text-slate-900 outline-none transition-colors focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+          >
+            {IMAGE_DESTINATION_GROUPS.map((group) => (
+              <optgroup key={group.group} label={group.group}>
+                {group.options.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label} - {option.helper}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+          <p className="text-xs text-slate-500">{getDestinationOption(form.destination).helper}</p>
+        </label>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <label className="space-y-2 text-sm font-medium text-slate-700">
+          <span>Alt text</span>
+          <input
+            value={form.altText}
+            onChange={(event) => setForm((prev) => ({ ...prev, altText: event.target.value }))}
+            placeholder="Describe the image for screen readers"
+            className="w-full rounded-2xl border border-orange-100 bg-white px-4 py-3 text-slate-900 outline-none transition-colors placeholder:text-slate-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+          />
+        </label>
+
+        <label className="space-y-2 text-sm font-medium text-slate-700">
+          <span>Tags</span>
+          <input
+            value={form.tags}
+            onChange={(event) => setForm((prev) => ({ ...prev, tags: event.target.value }))}
+            placeholder="volunteer, children, portrait"
+            className="w-full rounded-2xl border border-orange-100 bg-white px-4 py-3 text-slate-900 outline-none transition-colors placeholder:text-slate-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+          />
+        </label>
+      </div>
+
+      <label className="block space-y-2 text-sm font-medium text-slate-700">
+        <span>Caption</span>
+        <textarea
+          value={form.caption}
+          onChange={(event) => setForm((prev) => ({ ...prev, caption: event.target.value }))}
+          rows={3}
+          placeholder="Short internal caption or note"
+          className="w-full rounded-2xl border border-orange-100 bg-white px-4 py-3 text-slate-900 outline-none transition-colors placeholder:text-slate-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+        />
+      </label>
+
+      <label className="block space-y-2 text-sm font-medium text-slate-700">
+        <span>File</span>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(event) => setFile(event.target.files?.[0] ?? null)}
+          required
+          className="block w-full rounded-2xl border border-dashed border-orange-200 bg-orange-50/60 px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-gradient-to-r file:from-orange-500 file:to-pink-500 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:bg-orange-50"
+        />
+        {file && <p className="text-xs text-slate-500">Selected: {file.name}</p>}
+      </label>
+
+      {error && <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
+      {success && <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{success}</div>}
+
+      <div className="flex items-center justify-end gap-3">
+        <button
+          type="submit"
+          disabled={saving}
+          className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-orange-500/20 transition-transform hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          <UploadCloud className="h-4 w-4" />
+          {saving ? 'Uploading...' : 'Upload media'}
+        </button>
+      </div>
+    </form>
+  );
+}
+
+function GalleryUploadForm({ onUploaded }: { onUploaded: () => void }) {
+  const [categories, setCategories] = useState<GalleryCategory[]>([]);
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [form, setForm] = useState({
+    title: '',
+    description: '',
+    category: '',
+    dateTaken: '',
+    isFeatured: false,
+  });
+  const [file, setFile] = useState<File | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadCategories() {
+      setLoadingCategories(true);
+      try {
+        const response = await api.gallery.listCategories();
+        if (!active) return;
+        const normalizedCategories = Array.isArray(response)
+          ? response
+          : Array.isArray((response as { results?: GalleryCategory[] }).results)
+            ? (response as { results: GalleryCategory[] }).results
+            : [];
+        setCategories(normalizedCategories);
+        setForm((prev) => ({ ...prev, category: prev.category || String(normalizedCategories[0]?.id ?? '') }));
+      } catch {
+        if (!active) return;
+        setCategories([]);
+      } finally {
+        if (active) setLoadingCategories(false);
+      }
+    }
+
+    void loadCategories();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError('');
+    setSuccess('');
+
+    if (!file) {
+      setError('Choose an image file to upload.');
+      return;
+    }
+
+    setSaving(true);
+    try {
+      await api.admin.galleryPhotos.create({
+        title: form.title.trim(),
+        image: file,
+        description: form.description.trim() || undefined,
+        category: form.category ? Number(form.category) : undefined,
+        is_featured: form.isFeatured,
+        date_taken: form.dateTaken || undefined,
+      });
+
+      setSuccess('Photo uploaded to Gallery page / Gallery grid.');
+      setForm({ title: '', description: '', category: categories[0] ? String(categories[0].id) : '', dateTaken: '', isFeatured: false });
+      setFile(null);
+      onUploaded();
+    } catch (uploadError) {
+      setError(uploadError instanceof Error ? uploadError.message : 'Unable to upload gallery photo.');
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4 rounded-[1.75rem] border border-orange-100 bg-white p-5 shadow-sm">
+      <div className="flex items-start gap-3 rounded-2xl bg-gradient-to-r from-orange-50 to-pink-50 px-4 py-3 text-sm text-slate-700">
+        <ImagePlus className="mt-0.5 h-5 w-5 text-orange-500" />
+        <p>Upload a photo for the public gallery. Mark it featured if you want it to appear in the homepage hero or featured program blocks.</p>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <label className="space-y-2 text-sm font-medium text-slate-700">
+          <span>Title</span>
+          <input
+            value={form.title}
+            onChange={(event) => setForm((prev) => ({ ...prev, title: event.target.value }))}
+            required
+            placeholder="Example: Children at play"
+            className="w-full rounded-2xl border border-orange-100 bg-white px-4 py-3 text-slate-900 outline-none transition-colors placeholder:text-slate-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+          />
+        </label>
+
+        <label className="space-y-2 text-sm font-medium text-slate-700">
+          <span>Gallery category</span>
+          <select
+            value={form.category}
+            onChange={(event) => setForm((prev) => ({ ...prev, category: event.target.value }))}
+            disabled={loadingCategories}
+            className="w-full rounded-2xl border border-orange-100 bg-white px-4 py-3 text-slate-900 outline-none transition-colors focus:border-orange-400 focus:ring-2 focus:ring-orange-200 disabled:opacity-60"
+          >
+            {categories.length === 0 ? (
+              <option value="">No gallery categories loaded</option>
+            ) : (
+              categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {cleanCategoryLabel(category.name) || category.name} - {category.description || 'Gallery category'} ({category.count} photos)
+                </option>
+              ))
+            )}
+          </select>
+          {form.category && (
+            <p className="text-xs text-slate-500">
+              {(() => {
+                const selected = categories.find((category) => String(category.id) === String(form.category));
+                return selected ? `${cleanCategoryLabel(selected.name) || selected.name} is currently used for ${selected.count} photos.` : 'This category controls where the gallery photo appears and how it is grouped.';
+              })()}
+            </p>
+          )}
+        </label>
+      </div>
+
+      <label className="block space-y-2 text-sm font-medium text-slate-700">
+        <span>Description</span>
+        <textarea
+          value={form.description}
+          onChange={(event) => setForm((prev) => ({ ...prev, description: event.target.value }))}
+          rows={3}
+          placeholder="Short description shown in the admin record"
+          className="w-full rounded-2xl border border-orange-100 bg-white px-4 py-3 text-slate-900 outline-none transition-colors placeholder:text-slate-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+        />
+      </label>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <label className="space-y-2 text-sm font-medium text-slate-700">
+          <span>Date taken</span>
+          <input
+            type="date"
+            value={form.dateTaken}
+            onChange={(event) => setForm((prev) => ({ ...prev, dateTaken: event.target.value }))}
+            className="w-full rounded-2xl border border-orange-100 bg-white px-4 py-3 text-slate-900 outline-none transition-colors focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+          />
+        </label>
+
+        <label className="flex items-center gap-3 rounded-2xl border border-orange-100 bg-orange-50/50 px-4 py-3 text-sm font-medium text-slate-700">
+          <input
+            type="checkbox"
+            checked={form.isFeatured}
+            onChange={(event) => setForm((prev) => ({ ...prev, isFeatured: event.target.checked }))}
+            className="h-4 w-4 rounded border-orange-300 text-orange-500 focus:ring-orange-400"
+          />
+          Featured photo
+        </label>
+      </div>
+
+      <label className="block space-y-2 text-sm font-medium text-slate-700">
+        <span>Image file</span>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(event) => setFile(event.target.files?.[0] ?? null)}
+          required
+          className="block w-full rounded-2xl border border-dashed border-orange-200 bg-orange-50/60 px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-gradient-to-r file:from-orange-500 file:to-pink-500 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:bg-orange-50"
+        />
+        {file && <p className="text-xs text-slate-500">Selected: {file.name}</p>}
+      </label>
+
+      {error && <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
+      {success && <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{success}</div>}
+
+      <div className="flex items-center justify-end gap-3">
+        <button
+          type="submit"
+          disabled={saving}
+          className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-orange-500/20 transition-transform hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          <ImagePlus className="h-4 w-4" />
+          {saving ? 'Uploading...' : 'Upload gallery photo'}
+        </button>
+      </div>
+    </form>
+  );
+}
+
 function MediaLibraryPage() {
+  const [refreshKey, setRefreshKey] = useState(0);
   const config: AdminResourceConfig<AdminMediaAssetRecord> = {
     title: 'Media Library',
     description: 'Media assets with metadata, alt text, caption, and usage context.',
@@ -505,7 +926,7 @@ function MediaLibraryPage() {
         },
       },
       { key: 'title', label: 'Title', render: (item) => item.title },
-      { key: 'category', label: 'Category', render: (item) => item.category || '—' },
+      { key: 'category', label: 'Category', render: (item) => cleanCategoryLabel(item.category) || '—' },
       { key: 'usage_count', label: 'Usage', render: (item) => String(item.usage_count ?? 0) },
       { key: 'updated_at', label: 'Updated', render: (item) => formatDate(item.updated_at) },
     ],
@@ -513,7 +934,7 @@ function MediaLibraryPage() {
       { label: 'Title', render: (item) => item.title },
       { label: 'Alt Text', render: (item) => item.alt_text || '—' },
       { label: 'Caption', render: (item) => item.caption || '—' },
-      { label: 'Category', render: (item) => item.category || '—' },
+      { label: 'Category', render: (item) => cleanCategoryLabel(item.category) || '—' },
       { label: 'Usage Count', render: (item) => String(item.usage_count ?? 0) },
       {
         label: 'File URL',
@@ -523,9 +944,42 @@ function MediaLibraryPage() {
         },
       },
     ],
+    rowActions: [
+      {
+        label: 'Rename',
+        tone: 'secondary',
+        promptMessage: 'Enter a new title for this media asset.',
+        handler: async (item, promptValue) => {
+          if (!promptValue?.trim()) throw new Error('Title is required.');
+          await api.admin.mediaAssets.update(item.id, { title: promptValue.trim() });
+        },
+      },
+      {
+        label: 'Delete',
+        tone: 'danger',
+        confirmMessage: 'Delete this media asset permanently?',
+        handler: async (item) => {
+          await api.admin.mediaAssets.delete(item.id);
+        },
+      },
+    ],
   };
 
-  return <AdminResourcePage config={config} />;
+  return (
+    <div className="space-y-6">
+      <DashboardSectionCard
+        eyebrow="Dashboard / Media Library"
+        title="Upload reusable image files"
+        description="Add a file here when you want staff to reuse it later across the site. The table below refreshes after each upload."
+      >
+        <MediaUploadForm onUploaded={() => setRefreshKey((value) => value + 1)} />
+      </DashboardSectionCard>
+
+      <div key={refreshKey}>
+        <AdminResourcePage config={config} />
+      </div>
+    </div>
+  );
 }
 
 function MarketingPage() {
@@ -701,6 +1155,92 @@ function AuditLogPage() {
   );
 }
 
+function SettingsAssetField({
+  label,
+  value,
+  onChange,
+  uploadTitle,
+  uploadCategory,
+  helperText,
+}: {
+  label: string;
+  value: string;
+  onChange: (nextValue: string) => void;
+  uploadTitle: string;
+  uploadCategory: string;
+  helperText: string;
+}) {
+  const [file, setFile] = useState<File | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
+
+  async function upload() {
+    setError('');
+    setMessage('');
+
+    if (!file) {
+      setError('Choose an image file first.');
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const response = await api.admin.mediaAssets.create({
+        title: uploadTitle,
+        file,
+        category: uploadCategory,
+        alt_text: label,
+      });
+      const nextUrl = String(response.file_url || response.file || '');
+      onChange(nextUrl);
+      setMessage('Uploaded and attached to this setting.');
+      setFile(null);
+    } catch (uploadError) {
+      setError(uploadError instanceof Error ? uploadError.message : 'Unable to upload image.');
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <div className="rounded-[1.75rem] border border-orange-100 bg-white p-5 shadow-[0_18px_40px_rgba(251,146,60,0.08)]">
+      <p className="text-xs uppercase tracking-[0.2em] text-orange-500">{label}</p>
+      <p className="mt-2 text-sm text-slate-500">{helperText}</p>
+
+      <input
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        placeholder="Paste a public image URL"
+        className="mt-4 w-full rounded-2xl border border-orange-100 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition-colors placeholder:text-slate-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+      />
+
+      <div className="mt-4 space-y-3">
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(event) => setFile(event.target.files?.[0] ?? null)}
+          className="block w-full rounded-2xl border border-dashed border-orange-200 bg-orange-50/60 px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-gradient-to-r file:from-orange-500 file:to-pink-500 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:bg-orange-50"
+        />
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-xs text-slate-500">{file ? file.name : 'Upload an image or paste a URL.'}</p>
+          <button
+            type="button"
+            onClick={() => void upload()}
+            disabled={saving}
+            className="rounded-full bg-gradient-to-r from-orange-500 to-pink-500 px-4 py-2 text-xs font-semibold text-white shadow-lg shadow-orange-500/20 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {saving ? 'Uploading...' : 'Upload'}
+          </button>
+        </div>
+      </div>
+
+      {message && <p className="mt-3 text-sm text-emerald-700">{message}</p>}
+      {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+    </div>
+  );
+}
+
 function SettingsPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -748,6 +1288,12 @@ function SettingsPage() {
         homepage_subtitle: form.homepage_subtitle ?? '',
         primary_color: form.primary_color ?? '',
         secondary_color: form.secondary_color ?? '',
+        logo: form.logo_url ?? form.logo ?? '',
+        logo_url: form.logo_url ?? form.logo ?? '',
+        favicon: form.favicon_url ?? form.favicon ?? '',
+        favicon_url: form.favicon_url ?? form.favicon ?? '',
+        director_executive_image_url: form.director_executive_image_url ?? '',
+        director_international_image_url: form.director_international_image_url ?? '',
       };
       const next = await api.admin.siteSettings.update<AdminSiteSettingsRecord>(payload, 'PATCH');
       setForm(next);
@@ -794,6 +1340,41 @@ function SettingsPage() {
             />
           </label>
         ))}
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        <SettingsAssetField
+          label="Branding / Logo"
+          value={String(form.logo_url || form.logo || '')}
+          onChange={(nextValue) => setForm((prev) => ({ ...prev, logo: nextValue, logo_url: nextValue }))}
+          uploadTitle="Site logo"
+          uploadCategory="branding"
+          helperText="This logo appears in the public brand identity."
+        />
+        <SettingsAssetField
+          label="Branding / Favicon"
+          value={String(form.favicon_url || form.favicon || '')}
+          onChange={(nextValue) => setForm((prev) => ({ ...prev, favicon: nextValue, favicon_url: nextValue }))}
+          uploadTitle="Site favicon"
+          uploadCategory="branding"
+          helperText="This icon appears in the browser tab and bookmarks."
+        />
+        <SettingsAssetField
+          label="About page / Director section"
+          value={String(form.director_executive_image_url || '')}
+          onChange={(nextValue) => setForm((prev) => ({ ...prev, director_executive_image_url: nextValue }))}
+          uploadTitle="Executive director portrait"
+          uploadCategory="about"
+          helperText="This image appears beside Mr. Benjamin Oyoo Ondoro on the About page."
+        />
+        <SettingsAssetField
+          label="About page / Director section"
+          value={String(form.director_international_image_url || '')}
+          onChange={(nextValue) => setForm((prev) => ({ ...prev, director_international_image_url: nextValue }))}
+          uploadTitle="International director portrait"
+          uploadCategory="about"
+          helperText="This image appears beside JM on the About page."
+        />
       </div>
 
       <div>
@@ -1219,6 +1800,7 @@ function GalleryPage() {
   const [active, setActive] = useState<'photos' | 'featured' | 'random' | 'categories'>('photos');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     let mounted = true;
@@ -1245,19 +1827,27 @@ function GalleryPage() {
 
     void load();
     return () => { mounted = false; };
-  }, [active]);
+  }, [active, refreshKey]);
 
   return (
     <div className="space-y-6">
-      <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+      <DashboardSectionCard
+        eyebrow="Gallery / Media Library"
+        title="Upload public gallery photos"
+        description="Upload a photo here when it should appear on the public gallery and be available for homepage featured content."
+      >
+        <GalleryUploadForm onUploaded={() => setRefreshKey((value) => value + 1)} />
+      </DashboardSectionCard>
+
+      <div className="rounded-[1.75rem] border border-orange-100 bg-white p-6 shadow-[0_18px_40px_rgba(251,146,60,0.08)]">
         <div className="flex items-center justify-between gap-4 flex-wrap">
           <div>
             <h3 className="text-2xl font-bold text-slate-900">Gallery / Media Library</h3>
-            <p className="text-slate-500">Read-only preview of gallery categories and media.</p>
+            <p className="text-slate-500">Live preview of gallery categories and public photos.</p>
           </div>
-          <div className="inline-flex rounded-full border border-slate-200 bg-slate-50 p-1">
+          <div className="inline-flex rounded-full border border-orange-100 bg-orange-50/70 p-1">
             {(['photos', 'featured', 'random', 'categories'] as const).map((key) => (
-              <button key={key} type="button" onClick={() => setActive(key)} className={`rounded-full px-4 py-2 text-sm font-medium capitalize ${active === key ? 'bg-white shadow-sm text-slate-900' : 'text-slate-500'}`}>
+              <button key={key} type="button" onClick={() => setActive(key)} className={`rounded-full px-4 py-2 text-sm font-medium capitalize transition-colors ${active === key ? 'bg-white shadow-sm text-slate-900' : 'text-slate-500 hover:text-slate-900'}`}>
                 {key}
               </button>
             ))}
@@ -1265,15 +1855,15 @@ function GalleryPage() {
         </div>
       </div>
 
-      {loading && <div className="rounded-3xl border border-slate-200 bg-white p-6 text-slate-500 shadow-sm">Loading media library...</div>}
-      {error && <div className="rounded-3xl border border-red-200 bg-red-50 p-6 text-red-700 shadow-sm">{error}</div>}
+      {loading && <div className="rounded-[1.75rem] border border-orange-100 bg-white p-6 text-slate-500 shadow-[0_18px_40px_rgba(251,146,60,0.08)]">Loading media library...</div>}
+      {error && <div className="rounded-[1.75rem] border border-red-200 bg-red-50 p-6 text-red-700 shadow-sm">{error}</div>}
 
       {!loading && !error && (
         active === 'categories' ? (
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {categories.map((category) => (
-              <div key={category.id} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-                <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{category.slug}</p>
+              <div key={category.id} className="rounded-[1.75rem] border border-orange-100 bg-white p-5 shadow-[0_18px_40px_rgba(251,146,60,0.08)]">
+                <p className="text-xs uppercase tracking-[0.2em] text-orange-400">{category.slug}</p>
                 <h4 className="mt-2 text-xl font-bold text-slate-900">{category.name}</h4>
                 <p className="mt-2 text-sm text-slate-500">{category.description}</p>
                 <div className="mt-4 text-sm text-slate-700">{category.count} photos</div>
@@ -1283,7 +1873,30 @@ function GalleryPage() {
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {photos.map((photo) => (
-              <div key={photo.id} className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+              <div key={photo.id} className="overflow-hidden rounded-[1.75rem] border border-orange-100 bg-white shadow-[0_18px_40px_rgba(251,146,60,0.08)]">
+                <div className="flex items-center justify-end gap-2 border-b border-orange-100/70 px-3 py-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const nextTitle = window.prompt('Rename this photo', photo.title) ?? '';
+                      if (!nextTitle.trim()) return;
+                      void api.admin.galleryPhotos.update(photo.id, { title: nextTitle.trim() }).then(() => setRefreshKey((value) => value + 1));
+                    }}
+                    className="rounded-full border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
+                  >
+                    Rename
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!window.confirm('Delete this gallery photo permanently?')) return;
+                      void api.admin.galleryPhotos.delete(photo.id).then(() => setRefreshKey((value) => value + 1));
+                    }}
+                    className="rounded-full border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-medium text-red-700 hover:bg-red-100"
+                  >
+                    Delete
+                  </button>
+                </div>
                 <div className="aspect-square bg-slate-100">
                   <img src={photo.image_url || photo.image} alt={photo.title} className="h-full w-full object-cover" />
                 </div>

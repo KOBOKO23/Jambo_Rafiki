@@ -247,6 +247,10 @@ export interface OrganizationConfig {
   website: OrganizationWebsiteConfig;
   contact: OrganizationContactConfig;
   bank_account: OrganizationBankAccountConfig;
+  logo_url?: string | null;
+  favicon_url?: string | null;
+  director_executive_image_url?: string | null;
+  director_international_image_url?: string | null;
   timestamp: string;
 }
 
@@ -261,6 +265,15 @@ export interface GalleryPhoto {
   date_taken: string | null;
   is_featured: boolean;
   created_at: string;
+}
+
+export interface AdminGalleryPhotoCreateData {
+  title: string;
+  image: File;
+  description?: string;
+  category?: number | string;
+  is_featured?: boolean;
+  date_taken?: string;
 }
 
 export interface GalleryCategory {
@@ -416,6 +429,15 @@ export interface AdminMediaAssetRecord extends UnknownRecord {
   updated_at?: string;
 }
 
+export interface AdminMediaAssetCreateData {
+  title: string;
+  file: File;
+  alt_text?: string;
+  caption?: string;
+  category?: string;
+  tags?: string[] | string;
+}
+
 export interface AdminContentRevisionRecord extends UnknownRecord {
   id: number;
   entity_type?: string;
@@ -458,6 +480,8 @@ export interface AdminSiteSettingsRecord extends UnknownRecord {
   logo_url?: string;
   favicon?: string;
   favicon_url?: string;
+  director_executive_image_url?: string | null;
+  director_international_image_url?: string | null;
   primary_color?: string;
   secondary_color?: string;
   support_email?: string;
@@ -501,6 +525,9 @@ async function handleResponse<T>(response: Response): Promise<T> {
     const message = normalizeErrorMessage(payload) ?? fallbackErrorMessage(response.status);
     throw new ApiError(message, response.status);
   }
+  if (response.status === 204) {
+    return undefined as T;
+  }
   return response.json();
 }
 
@@ -521,12 +548,13 @@ function getCookieValue(name: string): string {
 function buildRequestInit(init?: RequestInit): RequestInit {
   const method = (init?.method ?? 'GET').toUpperCase();
   const headers = new Headers(init?.headers);
+  const body = init?.body;
 
   if (!headers.has('Accept')) {
     headers.set('Accept', 'application/json');
   }
 
-  if (init?.body && !headers.has('Content-Type')) {
+  if (body && !(body instanceof FormData) && !headers.has('Content-Type')) {
     headers.set('Content-Type', 'application/json');
   }
 
@@ -547,6 +575,30 @@ function buildRequestInit(init?: RequestInit): RequestInit {
 
 async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${path}`, buildRequestInit(init));
+  return handleResponse<T>(response);
+}
+
+function appendFormValue(formData: FormData, key: string, value: unknown) {
+  if (value === undefined || value === null || value === '') return;
+
+  if (Array.isArray(value)) {
+    formData.append(key, value.join(','));
+    return;
+  }
+
+  if (value instanceof File || value instanceof Blob) {
+    formData.append(key, value);
+    return;
+  }
+
+  formData.append(key, String(value));
+}
+
+async function requestFormData<T>(path: string, formData: FormData, method: 'POST' | 'PUT' | 'PATCH' = 'POST'): Promise<T> {
+  const response = await fetch(`${API_BASE_URL}${path}`, buildRequestInit({
+    method,
+    body: formData,
+  }));
   return handleResponse<T>(response);
 }
 
@@ -1062,6 +1114,29 @@ export const api = {
       get: async <T = AdminMediaAssetRecord>(id: number) => {
         return requestJson<T>(`${API_PATHS.adminMediaAssets}${id}/`);
       },
+      create: async <T = AdminMediaAssetRecord>(data: AdminMediaAssetCreateData) => {
+        const formData = new FormData();
+        appendFormValue(formData, 'title', data.title);
+        appendFormValue(formData, 'file', data.file);
+        appendFormValue(formData, 'alt_text', data.alt_text);
+        appendFormValue(formData, 'caption', data.caption);
+        appendFormValue(formData, 'category', data.category);
+        appendFormValue(formData, 'tags', data.tags);
+        return requestFormData<T>(API_PATHS.adminMediaAssets, formData, 'POST');
+      },
+      update: async <T = AdminMediaAssetRecord>(id: number, data: UnknownRecord, method: 'PUT' | 'PATCH' = 'PATCH') => {
+        return requestJson<T>(`${API_PATHS.adminMediaAssets}${id}/`, {
+          method,
+          headers: JSON_HEADERS,
+          body: JSON.stringify(data),
+        });
+      },
+      delete: async (id: number) => {
+        return requestJson<UnknownRecord>(`${API_PATHS.adminMediaAssets}${id}/`, {
+          method: 'DELETE',
+          headers: JSON_HEADERS,
+        });
+      },
     },
 
     contentRevisions: {
@@ -1091,6 +1166,29 @@ export const api = {
       },
       get: async <T = GalleryPhoto>(id: number) => {
         return requestJson<T>(`${API_PATHS.adminGalleryPhotos}${id}/`);
+      },
+      create: async <T = GalleryPhoto>(data: AdminGalleryPhotoCreateData) => {
+        const formData = new FormData();
+        appendFormValue(formData, 'title', data.title);
+        appendFormValue(formData, 'image', data.image);
+        appendFormValue(formData, 'description', data.description);
+        appendFormValue(formData, 'category', data.category);
+        appendFormValue(formData, 'is_featured', data.is_featured);
+        appendFormValue(formData, 'date_taken', data.date_taken);
+        return requestFormData<T>(API_PATHS.adminGalleryPhotos, formData, 'POST');
+      },
+      update: async <T = GalleryPhoto>(id: number, data: UnknownRecord, method: 'PUT' | 'PATCH' = 'PATCH') => {
+        return requestJson<T>(`${API_PATHS.adminGalleryPhotos}${id}/`, {
+          method,
+          headers: JSON_HEADERS,
+          body: JSON.stringify(data),
+        });
+      },
+      delete: async (id: number) => {
+        return requestJson<UnknownRecord>(`${API_PATHS.adminGalleryPhotos}${id}/`, {
+          method: 'DELETE',
+          headers: JSON_HEADERS,
+        });
       },
     },
   },
