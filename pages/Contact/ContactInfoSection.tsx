@@ -4,7 +4,7 @@ import { useOrganizationConfig } from '@/hooks/useOrganizationConfig';
 
 export default function ContactInfoSection() {
   const { organization } = useOrganizationConfig();
-  const email = organization.contact.email || CONTACT_INFO.email;
+  const email = organization.contact.email;
   const callNumber = organization.contact.call_redirect_number;
   const callHref = organization.contact.call_redirect_url || (callNumber ? `tel:${callNumber}` : '');
 

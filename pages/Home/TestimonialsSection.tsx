@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Smile, Quote, MessageSquarePlus, X, CheckCircle, Loader2, Star } from 'lucide-react';
 import { api } from '@/services/api';
+import type { TestimonialRole } from '@/services/api';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -84,10 +85,10 @@ interface SubmitModalProps {
 
 function SubmitModal({ onClose }: SubmitModalProps) {
   const [status, setStatus] = useState<ModalStatus>('idle');
-  const [form, setForm] = useState({ name: '', email: '', role: 'community_member', roleCustom: '', text: '' });
+  const [form, setForm] = useState({ name: '', email: '', role: 'community_member' as TestimonialRole, roleCustom: '', text: '' });
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 

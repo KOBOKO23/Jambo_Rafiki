@@ -14,7 +14,7 @@ function FacebookIcon({ className }: { className?: string }) {
 export function Footer() {
   const { organization } = useOrganizationConfig();
 
-  const email = organization.contact.email || CONTACT_INFO.email;
+  const email = organization.contact.email;
   const callNumber = organization.contact.call_redirect_number;
   const callHref = organization.contact.call_redirect_url || (callNumber ? `tel:${callNumber}` : '');
   const bankAccount = organization.bank_account;

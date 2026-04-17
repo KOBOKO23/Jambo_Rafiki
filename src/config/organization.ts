@@ -1,4 +1,3 @@
-import { CONTACT_INFO } from '@/config/contact';
 import type { OrganizationConfig } from '@/services/api';
 
 export const DEFAULT_ORGANIZATION_CONFIG: OrganizationConfig = {
@@ -7,7 +6,7 @@ export const DEFAULT_ORGANIZATION_CONFIG: OrganizationConfig = {
     url: 'https://www.jamborafiki.org',
   },
   contact: {
-    email: CONTACT_INFO.email,
+    email: 'hopenationsministries8@gmail.com',
     call_redirect_number: '',
     call_redirect_url: '',
   },

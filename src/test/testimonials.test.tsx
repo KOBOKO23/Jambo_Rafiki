@@ -41,7 +41,8 @@ describe('TestimonialsSection', () => {
 
     await user.type(screen.getByPlaceholderText('Your name'), 'Alex');
     await user.type(screen.getByPlaceholderText('Your email'), 'alex@example.com');
-    await user.type(screen.getByPlaceholderText('Your role'), 'Volunteer');
+    await user.selectOptions(screen.getByRole('combobox'), 'other');
+    await user.type(screen.getByPlaceholderText('Specify your role'), 'Volunteer');
     await user.type(
       screen.getByPlaceholderText('Share your experience with Jambo Rafiki…'),
       'It has been a deeply meaningful experience.'
@@ -73,7 +74,8 @@ describe('TestimonialsSection', () => {
 
     await user.type(screen.getByPlaceholderText('Your name'), 'Alex');
     await user.type(screen.getByPlaceholderText('Your email'), 'alex@example.com');
-    await user.type(screen.getByPlaceholderText('Your role'), 'Volunteer');
+    await user.selectOptions(screen.getByRole('combobox'), 'other');
+    await user.type(screen.getByPlaceholderText('Specify your role'), 'Volunteer');
     await user.type(
       screen.getByPlaceholderText('Share your experience with Jambo Rafiki…'),
       'It has been a deeply meaningful experience.'

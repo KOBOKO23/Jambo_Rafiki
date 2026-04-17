@@ -13,6 +13,7 @@ import {
   useStripe,
 } from '@stripe/react-stripe-js';
 import { getRuntimeEnv } from '@/config/runtimeEnv';
+import type { DonationType } from '@/services/api';
 
 const { stripeKey } = getRuntimeEnv();
 const stripePromise = stripeKey ? loadStripe(stripeKey) : Promise.resolve(null);
@@ -142,7 +143,7 @@ function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMetho
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('mpesa');
   const [status, setStatus]               = useState<Status>('idle');
   const [errorMessage, setErrorMessage]   = useState('');
-  const [cardStatusMessage, setCardStatusMessage] = useState('Your card donation was submitted successfully.');
+  const [completionMessage, setCompletionMessage] = useState('Your donation was submitted successfully.');
   const [currentStep, setCurrentStep]     = useState(1);
 
   const [formData, setFormData] = useState({
@@ -175,17 +176,12 @@ function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMetho
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
-    setFormData(prev => ({ ...prev, [name]: checked }));
-  };
-
   const resetForm = () => {
     setFormData({ donorName: '', donorEmail: '', donorPhone: '', amount: '', donationType: 'one_time', purpose: 'general', message: '', isAnonymous: false });
     setPaymentMethod('mpesa');
     setStatus('idle');
     setErrorMessage('');
-    setCardStatusMessage('Your card donation was submitted successfully.');
+    setCompletionMessage('Your donation was submitted successfully.');
     setCurrentStep(1);
   };
 
@@ -208,17 +204,24 @@ function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMetho
       if (!Number.isFinite(amount) || amount <= 0) throw new Error('Enter a valid donation amount');
 
       if (paymentMethod === 'mpesa') {
-        await api.donations.mpesa({
+        const response = await api.donations.mpesa({
           donor_name:    formData.donorName,
           donor_email:   formData.donorEmail,
           donor_phone:   formData.donorPhone,
           amount,
           currency:      'KES',
-          donation_type: formData.donationType,
+          donation_type: formData.donationType as DonationType,
           purpose:       formData.purpose,
           message:       formData.message,
           is_anonymous:  formData.isAnonymous,
         });
+        if (response.status === 'pending' || response.status === 'processing') {
+          setCompletionMessage(response.message || 'An M-Pesa prompt has been sent to your phone. Please complete the payment.');
+        } else if (response.status === 'completed') {
+          setCompletionMessage(response.message || 'Your M-Pesa donation was completed successfully.');
+        } else {
+          setCompletionMessage(response.message || 'Your M-Pesa donation has been submitted.');
+        }
         setStatus('success');
         return;
       }
@@ -228,22 +231,30 @@ function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMetho
         const cardNumberElement = elements.getElement(CardNumberElement);
         if (!cardNumberElement) throw new Error('Card element missing');
 
+        const paymentMethodResult = await stripe.createPaymentMethod({
+          type: 'card',
+          card: cardNumberElement,
+          billing_details: { name: formData.donorName, email: formData.donorEmail },
+        });
+
+        if (paymentMethodResult.error) {
+          throw new Error(paymentMethodResult.error.message || 'Unable to create card payment method');
+        }
+
         const intent = await api.donations.stripe({
           donor_name:    formData.donorName,
           donor_email:   formData.donorEmail,
           amount,
           currency:      'USD',
-          donation_type: formData.donationType,
+          donation_type: formData.donationType as DonationType,
           purpose:       formData.purpose,
           message:       formData.message,
           is_anonymous:  formData.isAnonymous,
+          payment_method_id: paymentMethodResult.paymentMethod?.id,
         });
 
         const confirmation = await stripe.confirmCardPayment(intent.client_secret, {
-          payment_method: {
-            card: cardNumberElement,
-            billing_details: { name: formData.donorName, email: formData.donorEmail },
-          },
+          payment_method: paymentMethodResult.paymentMethod?.id,
         });
 
         if (confirmation.error) throw new Error(confirmation.error.message || 'Card payment confirmation failed');
@@ -252,9 +263,9 @@ function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMetho
         if (!pi) throw new Error('Unable to confirm card payment');
 
         if (pi.status === 'succeeded') {
-          setCardStatusMessage('Your card payment was successful. Thank you for your support.');
+          setCompletionMessage('Your card payment was successful. Thank you for your support.');
         } else if (pi.status === 'processing') {
-          setCardStatusMessage('Your card payment is processing. We will confirm it shortly.');
+          setCompletionMessage('Your card payment is processing. We will confirm it shortly.');
         } else {
           throw new Error(`Card payment could not be completed (status: ${pi.status})`);
         }
@@ -279,9 +290,7 @@ function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMetho
           </div>
           <h3 className="text-2xl font-bold text-gray-900 mb-2">Thank you!</h3>
           <p className="text-gray-500 text-sm mb-1">
-            {paymentMethod === 'mpesa'
-              ? 'An M-Pesa prompt has been sent to your phone. Please complete the payment.'
-              : cardStatusMessage}
+            {completionMessage}
           </p>
           {formData.amount && (
             <p className="text-3xl font-bold text-orange-500 mt-4 mb-1">

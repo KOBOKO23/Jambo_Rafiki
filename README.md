@@ -347,10 +347,7 @@ To change colors, update `tailwind.config.js` theme section.
 3. Configure:
    - **Build Command:** `npm run build`
    - **Publish Directory:** `dist`
-4. Add `_redirects` file for SPA routing:
-   ```
-   /* /index.html 200
-   ```
+4. SPA routing fallback is already configured in `netlify.toml`.
 5. Deploy!
 
 ### Option 3: GitHub Pages
@@ -374,20 +371,27 @@ To change colors, update `tailwind.config.js` theme section.
 
 ### Environment Variables
 
-If using backend APIs, create `.env.local`:
+If using backend APIs, copy `.env.example` to `.env.local` and set values:
 ```env
-VITE_API_URL=https://api.jamborafiki.org
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_ANON_KEY=your_supabase_key
-VITE_MPESA_SHORTCODE=your_mpesa_shortcode
+VITE_API_BASE_URL=https://api.jamborafiki.org
+VITE_STRIPE_KEY=pk_live_or_test_key
+VITE_ENABLE_CREDENTIALS=true
 ```
 
 Add these in your hosting platform's environment variables section.
 
+### Prelaunch Validation
+
+Use the launch checklist:
+- Docs/10-Takeover-Checklist.md
+
+Run automated smoke checks against your deployed frontend and backend:
+
+npm run smoke:prelaunch -- --frontend https://your-frontend.vercel.app --backend https://api.yourdomain.com
+
 ## 📚 Documentation
 
-- **PROJECT_DOCUMENTATION.md** - Complete technical documentation
-- **BACKEND_OPTIONS.md** - Backend integration guide (Django vs Supabase)
+- **Docs/** - Complete technical and operational handover documentation
 
 ## 🧪 Testing
 

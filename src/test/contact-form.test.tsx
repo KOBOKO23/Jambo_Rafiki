@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { BrowserRouter } from 'react-router-dom';
 import ContactForm from '../../pages/Contact/ContactForm';
 import { api } from '@/services/api';
 
@@ -27,7 +28,7 @@ describe('ContactForm', () => {
     const submitMock = vi.mocked(api.contacts.submit);
     submitMock.mockResolvedValue({ message: 'ok', data: {} });
 
-    render(<ContactForm />);
+    render(<BrowserRouter><ContactForm /></BrowserRouter>);
 
     await user.type(screen.getByLabelText('Your Name *'), 'Jane Doe');
     await user.type(screen.getByLabelText('Your Email *'), 'jane@example.com');
@@ -53,7 +54,7 @@ describe('ContactForm', () => {
     const submitMock = vi.mocked(api.contacts.submit);
     submitMock.mockRejectedValue(new Error('Network unavailable'));
 
-    render(<ContactForm />);
+    render(<BrowserRouter><ContactForm /></BrowserRouter>);
 
     await user.type(screen.getByLabelText('Your Name *'), 'Jane Doe');
     await user.type(screen.getByLabelText('Your Email *'), 'jane@example.com');

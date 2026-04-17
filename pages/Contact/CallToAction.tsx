@@ -1,11 +1,10 @@
 import { MessageSquare, Mail, ArrowRight, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
-import { CONTACT_INFO } from '@/config/contact';
 import { useOrganizationConfig } from '@/hooks/useOrganizationConfig';
 
 export default function CallToAction() {
   const { organization } = useOrganizationConfig();
-  const email = organization.contact.email || CONTACT_INFO.email;
+  const email = organization.contact.email;
   const callHref = organization.contact.call_redirect_url || (organization.contact.call_redirect_number ? `tel:${organization.contact.call_redirect_number}` : '');
 
   return (
