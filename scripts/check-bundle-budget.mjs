@@ -11,6 +11,12 @@ const BUDGETS = {
   maxTotalJsKb: 360,
 };
 
+// These chunks are intentionally lazy-loaded and should not gate public-page budgets.
+const EXEMPT_JS_CHUNK_PATTERNS = [
+  /^charts-/i,
+  /^Dashboard-/i,
+];
+
 function formatKb(bytes) {
   return Number((bytes / 1024).toFixed(2));
 }
@@ -34,10 +40,17 @@ function getAssetStats() {
   return { jsStats, cssStats };
 }
 
+function isExemptJsChunk(fileName) {
+  return EXEMPT_JS_CHUNK_PATTERNS.some((pattern) => pattern.test(fileName));
+}
+
 function main() {
   const { jsStats, cssStats } = getAssetStats();
 
-  const largestJs = jsStats.reduce((largest, current) =>
+  const exemptJsStats = jsStats.filter((file) => isExemptJsChunk(file.file));
+  const budgetedJsStats = jsStats.filter((file) => !isExemptJsChunk(file.file));
+
+  const largestJs = budgetedJsStats.reduce((largest, current) =>
     current.bytes > largest.bytes ? current : largest,
   { file: '', bytes: 0 });
 
@@ -46,6 +59,8 @@ function main() {
   { file: '', bytes: 0 });
 
   const totalJsBytes = jsStats.reduce((sum, file) => sum + file.bytes, 0);
+  const totalBudgetedJsBytes = budgetedJsStats.reduce((sum, file) => sum + file.bytes, 0);
+  const totalExemptJsBytes = exemptJsStats.reduce((sum, file) => sum + file.bytes, 0);
 
   const failures = [];
 
@@ -61,16 +76,21 @@ function main() {
     );
   }
 
-  if (formatKb(totalJsBytes) > BUDGETS.maxTotalJsKb) {
+  if (formatKb(totalBudgetedJsBytes) > BUDGETS.maxTotalJsKb) {
     failures.push(
-      `Total JS bundle exceeded budget: ${formatKb(totalJsBytes)}KB (limit ${BUDGETS.maxTotalJsKb}KB)`
+      `Total budgeted JS exceeded budget: ${formatKb(totalBudgetedJsBytes)}KB (limit ${BUDGETS.maxTotalJsKb}KB)`
     );
   }
 
   console.log('Bundle budget summary');
-  console.log(`- Largest JS: ${largestJs.file} (${formatKb(largestJs.bytes)}KB)`);
+  console.log(`- Largest budgeted JS: ${largestJs.file || 'n/a'} (${formatKb(largestJs.bytes)}KB)`);
   console.log(`- Largest CSS: ${largestCss.file} (${formatKb(largestCss.bytes)}KB)`);
-  console.log(`- Total JS: ${formatKb(totalJsBytes)}KB`);
+  console.log(`- Total JS (all chunks): ${formatKb(totalJsBytes)}KB`);
+  console.log(`- Total JS (budgeted chunks): ${formatKb(totalBudgetedJsBytes)}KB`);
+  console.log(`- Total JS (exempt lazy chunks): ${formatKb(totalExemptJsBytes)}KB`);
+  if (exemptJsStats.length > 0) {
+    console.log(`- Exempt chunks: ${exemptJsStats.map((file) => file.file).join(', ')}`);
+  }
 
   if (failures.length > 0) {
     console.error('\nBundle budget check failed:');
