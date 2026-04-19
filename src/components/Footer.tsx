@@ -14,10 +14,10 @@ function FacebookIcon({ className }: { className?: string }) {
 export function Footer() {
   const { organization } = useOrganizationConfig();
 
-  const email = organization.contact.email;
-  const callNumber = organization.contact.call_redirect_number;
-  const callHref = organization.contact.call_redirect_url || (callNumber ? `tel:${callNumber}` : '');
-  const bankAccount = organization.bank_account;
+  // Always use the main info email
+  const email = 'info@jamborafiki.org';
+  // Only show call icon as a link, do not display number
+  const callHref = organization.contact.call_redirect_url || (organization.contact.call_redirect_number ? `tel:${organization.contact.call_redirect_number}` : '');
 
   return (
     <footer className="bg-gray-900 text-gray-300">
@@ -94,14 +94,10 @@ export function Footer() {
                 </a>
               </li>
               <li className="flex items-center space-x-2">
-                <Phone className="h-5 w-5 text-orange-400 flex-shrink-0" />
+                <Phone className="h-5 w-5 text-orange-400 flex-shrink-0 cursor-pointer" />
                 {callHref ? (
-                  <a href={callHref} className="hover:text-orange-400 transition-colors">
-                    {callNumber || 'Call us'}
-                  </a>
-                ) : (
-                  <span>{CONTACT_INFO.contactPerson}</span>
-                )}
+                  <a href={callHref} className="sr-only">Call</a>
+                ) : null}
               </li>
               <li className="flex items-center space-x-2">
                 <Globe className="h-5 w-5 text-orange-400 flex-shrink-0" />
@@ -114,26 +110,7 @@ export function Footer() {
                   {organization.website.domain}
                 </a>
               </li>
-              {bankAccount.account_name || bankAccount.account_number ? (
-                <li className="flex items-start space-x-2">
-                  <Landmark className="h-5 w-5 text-orange-400 flex-shrink-0 mt-0.5" />
-                  <span>
-                    {bankAccount.account_name || 'Bank transfer details'}
-                    {bankAccount.account_number ? <><br />A/C {bankAccount.account_number}</> : null}
-                  </span>
-                </li>
-              ) : null}
-              <li className="flex items-center space-x-2">
-                <FacebookIcon className="h-5 w-5 text-orange-400 flex-shrink-0" />
-                <a
-                  href={CONTACT_INFO.facebookUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-orange-400 transition-colors"
-                >
-                  Follow us on Facebook
-                </a>
-              </li>
+              {/* No account details shown */}
             </ul>
           </div>
         </div>

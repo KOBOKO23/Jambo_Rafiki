@@ -22,7 +22,7 @@ function getArg(name) {
   return args[idx + 1] || '';
 }
 
-const frontendRaw = getArg('--frontend') || process.env.FRONTEND_URL || '';
+const frontendRaw = getArg('--frontend') || process.env.FRONTEND_URL || 'https://www.jamborafiki.org';
 const backendRaw = getArg('--backend') || process.env.BACKEND_URL || '';
 
 if (!frontendRaw || !backendRaw) {

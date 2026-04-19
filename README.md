@@ -280,7 +280,7 @@ import { ImageWithFallback } from './components/figma/ImageWithFallback';
 ```tsx
 // Replace placeholders with real contact info
 const contactInfo = {
-  email: "hopenationsministries8@gmail.com",
+   email: "info@jamborafiki.org",
   phone: "+254 XXX XXX XXX",
   address: "P.O Box 311 – 40222, OYUGIS - KENYA",
   whatsapp: "+254 XXX XXX XXX"
@@ -461,7 +461,7 @@ Add redirect rules:
 
 **Contact Person:** Benjamin Oyoo Ondoro
 
-**Email:** hopenationsministries8@gmail.com
+**Email:** info@jamborafiki.org
 
 **Phone:** [Add phone number]
 

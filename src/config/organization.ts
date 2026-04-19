@@ -6,9 +6,9 @@ export const DEFAULT_ORGANIZATION_CONFIG: OrganizationConfig = {
     url: 'https://www.jamborafiki.org',
   },
   contact: {
-    email: 'hopenationsministries8@gmail.com',
-    call_redirect_number: '',
-    call_redirect_url: '',
+    email: 'info@jamborafiki.org',
+    call_redirect_number: '+254799616542',
+    call_redirect_url: 'tel:+254799616542',
   },
   bank_account: {
     bank_code: '',
