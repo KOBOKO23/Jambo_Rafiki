@@ -66,7 +66,7 @@ export default function HeroSection() {
           <div className="relative">
             <div className="aspect-[4/3] bg-gradient-to-br from-orange-200 to-pink-200 rounded-2xl shadow-2xl overflow-hidden">
               <img
-                src="/images/class.jpg"
+                src="/images/class.webp"
                 alt="Children at Jambo Rafiki"
                 className="w-full h-full object-cover"
               />

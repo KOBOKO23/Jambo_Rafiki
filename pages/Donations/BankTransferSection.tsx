@@ -21,7 +21,7 @@ export function BankTransferSection() {
               <p className="text-xs font-semibold uppercase tracking-[0.25em] text-orange-500">Bank Details</p>
               <h3 className="mt-2 text-2xl font-bold text-slate-900">Donation account information</h3>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
-                These details are sourced from the backend organization config. M-Pesa and card donations remain the primary online options.
+                These details are sourced from the backend organization config. For now, please use PayPal for donations.
               </p>
 
               {hasBankDetails ? (

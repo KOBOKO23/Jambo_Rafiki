@@ -124,16 +124,9 @@ const selectCls =
   'w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-gray-900 text-sm transition-all appearance-none cursor-pointer';
 
 /* ─── Main export ─────────────────────────────────────────────────── */
-export function DonationForm({ initialAmount, selectionSignal, initialPaymentMethod }: DonationFormProps) {
-  return (
-    <Elements stripe={stripePromise}>
-      <DonationFormInner
-        initialAmount={initialAmount}
-        selectionSignal={selectionSignal}
-        initialPaymentMethod={initialPaymentMethod}
-      />
-    </Elements>
-  );
+// Donation form disabled in favor of PayPal only
+export function DonationForm() {
+  return null;
 }
 
 function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMethod }: DonationFormProps) {

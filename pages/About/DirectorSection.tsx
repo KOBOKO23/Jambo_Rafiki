@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { api, type OrganizationConfig } from '@/services/api';
 
 const fallbackExecutiveImage = '/images/IMG_1537.webp';
-const fallbackInternationalImage = '/images/international.jpeg';
+const fallbackInternationalImage = '/images/international.webp';
 
 export default function DirectorSection() {
   const [organization, setOrganization] = useState<OrganizationConfig | null>(null);
