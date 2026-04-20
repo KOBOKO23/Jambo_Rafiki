@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Mail, MapPin, Phone, Globe, Landmark } from 'lucide-react';
+import { Mail, MapPin, Phone, Globe } from 'lucide-react';
 import { CONTACT_INFO } from '@/config/contact';
 import { useOrganizationConfig } from '@/hooks/useOrganizationConfig';
 

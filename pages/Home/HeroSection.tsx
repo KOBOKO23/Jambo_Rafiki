@@ -24,9 +24,6 @@ export default function HeroSection() {
         if (!mounted) return;
         setHeroPhoto(random[0] ?? null);
       } catch {
-        if (mounted) {
-          setHeroPhoto(null);
-        }
       }
     }
 

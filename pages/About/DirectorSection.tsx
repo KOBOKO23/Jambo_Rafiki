@@ -46,7 +46,7 @@ export default function DirectorSection() {
               <div className="absolute -inset-6 bg-gradient-to-br from-orange-100 to-pink-100 rounded-full blur-3xl opacity-25"></div>
 
               <img
-                src="/images/IMG_1537.webp"
+                src={executiveImage}
                 alt="Mr. Benjamin Oyoo Ondoro - Executive Director & Founder"
                 className="relative w-80 h-80 lg:w-96 lg:h-96 object-cover rounded-2xl border-4 border-white shadow-2xl"
               />
