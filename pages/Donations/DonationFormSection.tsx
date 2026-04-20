@@ -1,9 +1,11 @@
 import { DonationForm } from '@/components/DonationForm';
 
-type DonationFormSectionProps = {
-  selectedAmount?: number;
-  selectionSignal?: number;
-  initialPaymentMethod?: 'mpesa' | 'card';
-};
-
-// DonationFormSection removed: Only PayPal is supported now.
+export default function DonationFormSection() {
+  return (
+    <section className="py-10 md:py-16 bg-white">
+      <div className="container mx-auto px-4">
+        <DonationForm />
+      </div>
+    </section>
+  );
+}

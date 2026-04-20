@@ -41,7 +41,7 @@ const CARD_ELEMENT_STYLE = {
 } as const;
 
 const PRESET_AMOUNTS_MPESA = [500, 1000, 2500, 5000, 10000, 25000];
-const PRESET_AMOUNTS_CARD = [10, 25, 50, 100, 250, 500];
+const PRESET_AMOUNTS_CARD  = [10, 25, 50, 100, 250, 500];
 
 const PURPOSES = [
   { value: 'general',    label: 'General Support' },
@@ -124,9 +124,12 @@ const selectCls =
   'w-full px-4 py-3 rounded-xl border border-gray-200 bg-white focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-gray-900 text-sm transition-all appearance-none cursor-pointer';
 
 /* ─── Main export ─────────────────────────────────────────────────── */
-// Donation form disabled in favor of PayPal only
-export function DonationForm() {
-  return null;
+export function DonationForm(props: DonationFormProps) {
+  return (
+    <Elements stripe={stripePromise}>
+      <DonationFormInner {...props} />
+    </Elements>
+  );
 }
 
 function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMethod }: DonationFormProps) {
@@ -178,7 +181,6 @@ function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMetho
     setCurrentStep(1);
   };
 
-  /* step nav */
   const goNext = () => setCurrentStep(s => Math.min(s + 1, 3));
   const goBack = () => setCurrentStep(s => Math.max(s - 1, 1));
 
@@ -273,7 +275,7 @@ function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMetho
     }
   };
 
-  /* ── Success screen ──────────────────────────────────────────────── */
+  /* ── Success screen ── */
   if (status === 'success') {
     return (
       <div className="w-full max-w-lg mx-auto">
@@ -282,9 +284,7 @@ function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMetho
             <CheckCircle className="w-8 h-8 text-green-600" />
           </div>
           <h3 className="text-2xl font-bold text-gray-900 mb-2">Thank you!</h3>
-          <p className="text-gray-500 text-sm mb-1">
-            {completionMessage}
-          </p>
+          <p className="text-gray-500 text-sm mb-1">{completionMessage}</p>
           {formData.amount && (
             <p className="text-3xl font-bold text-orange-500 mt-4 mb-1">
               {currency} {Number(formData.amount).toLocaleString()}
@@ -302,7 +302,7 @@ function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMetho
     );
   }
 
-  /* ── Form ────────────────────────────────────────────────────────── */
+  /* ── Form ── */
   return (
     <div className="w-full max-w-lg mx-auto">
 
@@ -320,7 +320,7 @@ function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMetho
       {/* Payment method tabs */}
       <div className="flex gap-2 mb-6">
         {([
-          { id: 'mpesa', label: 'M-Pesa', sub: 'Mobile money', Icon: Smartphone },
+          { id: 'mpesa', label: 'M-Pesa', sub: 'Mobile money',    Icon: Smartphone },
           { id: 'card',  label: 'Card',   sub: 'Visa / Mastercard', Icon: CreditCard },
         ] as const).map(({ id, label, sub, Icon }) => (
           <button
@@ -347,7 +347,6 @@ function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMetho
 
         {/* ── Step 1: Amount & frequency ── */}
         <Section step={1} currentStep={currentStep} title="Amount & Frequency">
-          {/* Frequency */}
           <div className="flex rounded-xl overflow-hidden border border-gray-200 mb-4">
             {[
               { val: 'one_time', label: 'One-time' },
@@ -368,7 +367,6 @@ function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMetho
             ))}
           </div>
 
-          {/* Preset amounts */}
           <div className="grid grid-cols-3 gap-2 mb-3">
             {presets.map(amt => (
               <button
@@ -386,7 +384,6 @@ function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMetho
             ))}
           </div>
 
-          {/* Custom amount */}
           <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden focus-within:border-orange-400 focus-within:ring-2 focus-within:ring-orange-100 transition-all bg-white">
             <span className="px-4 py-3 text-sm font-medium text-gray-500 border-r border-gray-200 bg-gray-50 select-none">{currency}</span>
             <input
@@ -400,7 +397,6 @@ function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMetho
             />
           </div>
 
-          {/* Purpose */}
           <div className="mt-4">
             <Field label="Purpose">
               <div className="relative">
@@ -408,7 +404,9 @@ function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMetho
                   {PURPOSES.map(p => <option key={p.value} value={p.value}>{p.label}</option>)}
                 </select>
                 <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center">
-                  <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                  <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
                 </div>
               </div>
             </Field>
@@ -496,7 +494,6 @@ function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMetho
 
         {/* ── Step 3: Payment ── */}
         <Section step={3} currentStep={currentStep} title="Payment">
-          {/* Summary pill */}
           <div className="flex items-center justify-between bg-orange-50 border border-orange-100 rounded-xl px-4 py-3 mb-5">
             <div>
               <p className="text-xs text-orange-400 font-medium uppercase tracking-wider">Donating</p>
@@ -508,7 +505,6 @@ function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMetho
             </div>
           </div>
 
-          {/* Card payment fields */}
           {paymentMethod === 'card' && (
             <div className="space-y-4 mb-5">
               {!stripeEnabled && (
@@ -540,7 +536,6 @@ function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMetho
             </div>
           )}
 
-          {/* M-Pesa reminder */}
           {paymentMethod === 'mpesa' && (
             <div className="flex items-start gap-3 bg-green-50 border border-green-100 rounded-xl px-4 py-3 mb-5">
               <Smartphone className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
@@ -550,7 +545,6 @@ function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMetho
             </div>
           )}
 
-          {/* Error */}
           {status === 'error' && (
             <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 mb-4 text-sm text-red-700">
               {errorMessage}
@@ -574,7 +568,6 @@ function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMetho
             </button>
           </div>
 
-          {/* Trust badges */}
           <div className="flex items-center justify-center gap-5 mt-4 pt-4 border-t border-gray-100">
             <span className="flex items-center gap-1.5 text-xs text-gray-400">
               <Lock className="w-3 h-3" /> SSL encrypted
