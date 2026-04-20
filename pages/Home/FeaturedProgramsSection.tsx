@@ -52,7 +52,7 @@ const FeaturedProgramsSection = () => {
             {items.map((item) => (
               <article key={item.id} className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all">
                 <img
-                  src={item.image_url || item.image}
+                  src="/images/IMG_0470.webp"
                   alt={item.title}
                   className="w-full h-48 object-cover rounded-2xl mb-6"
                   loading="lazy"

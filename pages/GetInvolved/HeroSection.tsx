@@ -44,8 +44,7 @@ export default function HeroSection() {
           <div className="relative">
             <div className="aspect-[4/3] rounded-3xl shadow-2xl overflow-hidden bg-gray-100">
               <img
-                src="/images/IMG_0455.webp"  
-                /* replace with any placeholder image */
+                src="/images/IMG_0455.webp"
                 alt="Support Impact"
                 className="w-full h-full object-cover"
               />

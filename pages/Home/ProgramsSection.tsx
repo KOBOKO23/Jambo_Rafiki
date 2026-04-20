@@ -77,7 +77,7 @@ export default function ProgramsSection() {
               >
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <img
-                    src={program.image}
+                    src="/images/IMG_0471.webp"
                     alt={program.title}
                     className="w-full h-full object-cover"
                     loading="lazy"

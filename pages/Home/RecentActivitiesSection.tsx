@@ -6,22 +6,22 @@ const recentActivities = [
   { 
     title: 'Sunday Worship Service', 
     date: 'Dec 1, 2024', 
-    img: 'images/IMG_0347.webp'
+    img: '/images/IMG_0347.webp'
   },
   { 
     title: 'School Term Begins', 
     date: 'Nov 28, 2024', 
-    img: 'images/IMG_0456.webp'
+    img: '/images/IMG_0456.webp'
   },
   { 
     title: 'Sharing a Meal', 
     date: 'Nov 25, 2024', 
-    img: 'images/IMG_0468.webp'
+    img: '/images/IMG_0468.webp'
   },
   { 
     title: 'Time to Learn Farming', 
     date: 'Nov 22, 2024', 
-    img: 'images/IMG_0473.webp'
+    img: '/images/IMG_0473.webp'
   },
 ];
 

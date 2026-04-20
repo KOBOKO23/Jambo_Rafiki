@@ -68,17 +68,11 @@ export default function HeroSection() {
           </div>
           <div className="relative">
             <div className="aspect-[4/3] bg-gradient-to-br from-orange-200 to-pink-200 rounded-2xl shadow-2xl overflow-hidden">
-              {heroPhoto ? (
-                <img
-                  src={heroPhoto.image_url || heroPhoto.image}
-                  alt={heroPhoto.title || 'Children at Jambo Rafiki'}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-orange-100 to-pink-100 text-sm text-gray-600">
-                  Add a featured photo in Gallery CMS to personalize this hero section.
-                </div>
-              )}
+              <img
+                src="/images/class.jpg"
+                alt="Children at Jambo Rafiki"
+                className="w-full h-full object-cover"
+              />
             </div>
             <div className="absolute -top-4 -right-4 w-24 h-24 bg-orange-300 rounded-full opacity-50 blur-xl"></div>
             <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-pink-300 rounded-full opacity-50 blur-xl"></div>

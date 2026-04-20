@@ -44,7 +44,7 @@ export function HeroSection() {
             <div className="aspect-[4/3] rounded-3xl shadow-2xl overflow-hidden bg-gray-100">
               {/* Real image placeholder */}
               <img
-                src="/images/IMG_0461.webp" // Replace with any image you want
+                src="/images/IMG_0461.webp"
                 alt="Donation Impact"
                 className="w-full h-full object-cover"
               />
