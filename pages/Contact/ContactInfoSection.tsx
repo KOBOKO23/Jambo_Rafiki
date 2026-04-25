@@ -64,7 +64,6 @@ export default function ContactInfoSection() {
               </button>
 
               <p className="text-gray-500 text-sm mt-1">
-                {callNumber}
               </p>
             </div>
           </div>
