@@ -62,9 +62,6 @@ export default function ContactInfoSection() {
               >
                 Call now
               </button>
-
-              <p className="text-gray-500 text-sm mt-1">
-              </p>
             </div>
           </div>
         ) : null}
