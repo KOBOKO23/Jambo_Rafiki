@@ -1,11 +1,11 @@
-// HeroSection.jsx
+// HeroSection.tsx
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { api, type GalleryPhoto } from '@/services/api';
 
 export default function HeroSection() {
-  const [heroPhoto, setHeroPhoto] = useState<GalleryPhoto | null>(null);
+  const [_heroPhoto, setHeroPhoto] = useState<GalleryPhoto | null>(null);
 
   useEffect(() => {
     let mounted = true;
@@ -14,21 +14,19 @@ export default function HeroSection() {
       try {
         const featured = await api.gallery.listFeaturedPhotos();
         if (!mounted) return;
-
         if (featured.length > 0) {
           setHeroPhoto(featured[0]);
           return;
         }
-
         const random = await api.gallery.listRandomPhotos(1);
         if (!mounted) return;
         setHeroPhoto(random[0] ?? null);
       } catch {
+        // silently ignore photo load errors — static fallback image is shown
       }
     }
 
     void loadHeroPhoto();
-
     return () => {
       mounted = false;
     };
@@ -63,6 +61,7 @@ export default function HeroSection() {
               </Link>
             </div>
           </div>
+
           <div className="relative">
             <div className="aspect-[4/3] bg-gradient-to-br from-orange-200 to-pink-200 rounded-2xl shadow-2xl overflow-hidden">
               <img
@@ -71,8 +70,8 @@ export default function HeroSection() {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="absolute -top-4 -right-4 w-24 h-24 bg-orange-300 rounded-full opacity-50 blur-xl"></div>
-            <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-pink-300 rounded-full opacity-50 blur-xl"></div>
+            <div className="absolute -top-4 -right-4 w-24 h-24 bg-orange-300 rounded-full opacity-50 blur-xl" />
+            <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-pink-300 rounded-full opacity-50 blur-xl" />
           </div>
         </div>
       </div>
