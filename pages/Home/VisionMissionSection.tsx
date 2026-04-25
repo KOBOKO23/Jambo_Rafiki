@@ -26,7 +26,7 @@ export default function VisionMissionSection() {
           {/* Vision Image (updated) */}
           <div className="relative aspect-video bg-gradient-to-br from-blue-200 to-indigo-200 rounded-2xl shadow-lg flex items-center justify-center overflow-hidden group">
             <img
-              src="/images/director_students.webp"
+              src="/images/IMG_0457.webp"
               alt="Vision placeholder"
               className="absolute inset-0 w-full h-full object-cover"
             />
@@ -40,7 +40,7 @@ export default function VisionMissionSection() {
           {/* Mission Image (updated) */}
           <div className="relative aspect-video bg-gradient-to-br from-orange-200 to-pink-200 rounded-2xl shadow-lg flex items-center justify-center overflow-hidden group order-last lg:order-first">
             <img
-              src="/images/happy.webp"
+              src="/images/IMG_0456.webp"
               alt="Mission placeholder"
               className="absolute inset-0 w-full h-full object-cover"
             />

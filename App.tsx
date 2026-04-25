@@ -12,7 +12,12 @@ const ProgramsPage = lazy(() => import('./pages/Programs').then((module) => ({ d
 const GalleryPage = lazy(() => import('./pages/Gallery').then((module) => ({ default: module.GalleryPage })));
 const GetInvolvedPage = lazy(() => import('./pages/GetInvolved').then((module) => ({ default: module.GetInvolvedPage })));
 const ContactPage = lazy(() => import('./pages/Contact').then((module) => ({ default: module.ContactPage })));
+
+// ✅ FIX: DonationPage is now a named export (consistent with all other pages).
+//    The barrel index.ts must have: export * from './DonationPage';
+//    And DonationPage.tsx must use:  export function DonationPage() { ... }  (not export default)
 const DonationPage = lazy(() => import('./pages/Donations').then((module) => ({ default: module.DonationPage })));
+
 const AdminLoginPage = lazy(() => import('./pages/AdminLogin').then((module) => ({ default: module.AdminLoginPage })));
 const AdminForbiddenPage = lazy(() => import('./pages/AdminForbidden').then((module) => ({ default: module.AdminForbiddenPage })));
 const DashboardPage = lazy(() => import('./pages/Dashboard').then((module) => ({ default: module.DashboardPage })));
