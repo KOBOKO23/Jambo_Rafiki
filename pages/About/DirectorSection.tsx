@@ -76,15 +76,6 @@ export default function DirectorSection() {
                 Under his leadership, Jambo Rafiki has become a beacon of hope—offering shelter, food,
                 education, healthcare, spiritual guidance, and love to children who need it most.
               </p>
-              <p className="mt-4 text-gray-500 text-sm italic">
-                Email:{' '}
-                <a
-                  href="mailto:infodirector@jamborafiki.org"
-                  className="underline hover:text-orange-600"
-                >
-                  infodirector@jamborafiki.org
-                </a>
-              </p>
             </div>
           </div>
         </div>
@@ -127,16 +118,6 @@ export default function DirectorSection() {
               <p>
                 His role ensures that the vision of hope, care, and transformation continues
                 to grow beyond borders.
-              </p>
-
-              <p className="mt-4 text-gray-500 text-sm italic">
-                Email:{' '}
-                <a
-                  href="mailto:infointernationaldirector@jamborafiki.org"
-                  className="underline hover:text-orange-600"
-                >
-                  infointernationaldirector@jamborafiki.org
-                </a>
               </p>
             </div>
           </div>
