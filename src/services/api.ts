@@ -89,7 +89,6 @@ const JSON_HEADERS = {
   'Content-Type': 'application/json',
 } as const;
 
-const MUTATING_METHODS = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
 
 export class ApiError extends Error {
   status: number;
@@ -530,20 +529,6 @@ async function handleResponse<T>(response: Response): Promise<T> {
   return response.json();
 }
 
-function getCookieValue(name: string): string {
-  if (typeof document === 'undefined') return '';
-
-  const cookies = document.cookie ? document.cookie.split(';') : [];
-  for (const cookie of cookies) {
-    const [cookieName, ...rest] = cookie.trim().split('=');
-    if (cookieName === name) {
-      return decodeURIComponent(rest.join('='));
-    }
-  }
-
-  return '';
-}
-
 function buildRequestInit(init?: RequestInit): RequestInit {
   const method = (init?.method ?? 'GET').toUpperCase();
   const headers = new Headers(init?.headers);
@@ -557,19 +542,11 @@ function buildRequestInit(init?: RequestInit): RequestInit {
     headers.set('Content-Type', 'application/json');
   }
 
-  // Always attach CSRF token on mutating requests, regardless of enableCredentials
-  if (MUTATING_METHODS.has(method)) {
-    const csrfToken = getCookieValue('csrftoken');
-    if (csrfToken && !headers.has('X-CSRFToken')) {
-      headers.set('X-CSRFToken', csrfToken);
-    }
-  }
-
   return {
     ...init,
     method,
     headers,
-    credentials: 'include', // always send cookies cross-site
+    credentials: 'include',
   };
 }
 
@@ -606,24 +583,30 @@ async function requestFormData<T>(path: string, formData: FormData, method: 'POS
 export const api = {
   // Auth API
   auth: {
-    csrf: async () => {
-      return requestJson<{ csrf_token: string }>(API_PATHS.authCsrf);
+    csrf: async (): Promise<string> => {
+      const data = await requestJson<{ csrf_token: string }>(API_PATHS.authCsrf);
+      return data.csrf_token;
     },
 
     login: async (email: string, password: string) => {
-  // Fetch a fresh CSRF token immediately before the login POST
-  // so the csrftoken cookie is guaranteed to be set
-  try {
-    await requestJson<{ csrf_token: string }>(API_PATHS.authCsrf);
-  } catch {
-    // Non-blocking — attempt login anyway
-  }
-  return requestJson<AdminLoginResponse>(API_PATHS.authLogin, {
-    method: 'POST',
-    headers: JSON_HEADERS,
-    body: JSON.stringify({ email, password }),
-  });
-},
+      // Read CSRF token from response body — cookie is unreadable cross-subdomain
+      // (www.jamborafiki.org cannot read cookies set on api.jamborafiki.org)
+      let csrfToken = '';
+      try {
+        csrfToken = await api.auth.csrf();
+      } catch {
+        // Non-blocking — attempt login anyway
+      }
+
+      return requestJson<AdminLoginResponse>(API_PATHS.authLogin, {
+        method: 'POST',
+        headers: {
+          ...JSON_HEADERS,
+          ...(csrfToken ? { 'X-CSRFToken': csrfToken } : {}),
+        },
+        body: JSON.stringify({ email, password }),
+      });
+    },
 
     logout: async () => {
       return requestJson<{ message: string }>(API_PATHS.authLogout, {
@@ -639,9 +622,6 @@ export const api = {
 
   // Contact Form API
   contacts: {
-    /**
-     * Submit contact form
-     */
     submit: async (data: ContactFormData) => {
       return requestJson<ApiEnvelope<UnknownRecord>>(API_PATHS.contacts, {
         method: 'POST',
@@ -675,9 +655,6 @@ export const api = {
 
   // Donations API
   donations: {
-    /**
-     * Initiate M-Pesa donation
-     */
     mpesa: async (data: MPesaDonation) => {
       return requestJson<{
         message: string;
@@ -719,9 +696,6 @@ export const api = {
       });
     },
 
-    /**
-     * Process Stripe donation
-     */
     stripe: async (data: StripeDonation) => {
       return requestJson<{
         message: string;
@@ -752,9 +726,6 @@ export const api = {
 
   // Volunteers API
   volunteers: {
-    /**
-     * Submit volunteer application
-     */
     submit: async (data: VolunteerApplication) => {
       return requestJson<ApiEnvelope<UnknownRecord>>(API_PATHS.volunteers, {
         method: 'POST',
@@ -783,9 +754,6 @@ export const api = {
 
   // Newsletter API
   newsletter: {
-    /**
-     * Subscribe to newsletter
-     */
     subscribe: async (data: NewsletterSubscription) => {
       return requestJson<{ message: string }>(API_PATHS.newsletterSubscribe, {
         method: 'POST',
@@ -794,9 +762,6 @@ export const api = {
       });
     },
 
-    /**
-     * Unsubscribe from newsletter
-     */
     unsubscribe: async (email: string) => {
       return requestJson<{ message: string }>(API_PATHS.newsletterUnsubscribe, {
         method: 'POST',
@@ -859,18 +824,12 @@ export const api = {
     },
   },
 
-  // Sponsorships API (Future)
+  // Sponsorships API
   sponsorships: {
-    /**
-     * Get list of children available for sponsorship
-     */
     getChildren: async () => {
       return requestJson<UnknownRecord[]>(API_PATHS.sponsorshipChildren);
     },
 
-    /**
-     * Get specific child details
-     */
     getChild: async (id: number) => {
       return requestJson<UnknownRecord>(`${API_PATHS.sponsorshipChildren}${id}/`);
     },
@@ -1211,5 +1170,4 @@ export const api = {
   },
 };
 
-// Export API URL for use in other files
 export { API_BASE_URL };
