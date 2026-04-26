@@ -1,4 +1,3 @@
-// StatsSection.jsx
 import { useEffect, useState } from 'react';
 import { Heart, Users, Church, Target } from 'lucide-react';
 import { api } from '@/services/api';
@@ -32,14 +31,32 @@ export default function StatsSection() {
         if (!mounted) return;
 
         const childrenCount = Array.isArray(children) ? children.length : 0;
+
+        // Safely resolve the categories count regardless of API shape:
+        //  - plain array          → categories.length
+        //  - { results: [...] }  → categories.results.length
+        //  - { count: N }        → categories.count
+        //  - undefined / null    → 0
+        function resolveCategoriesCount(raw: unknown): number {
+          if (Array.isArray(raw)) return raw.length;
+          if (raw != null && typeof raw === 'object') {
+            const obj = raw as Record<string, unknown>;
+            if (Array.isArray(obj['results'])) return (obj['results'] as unknown[]).length;
+            if (typeof obj['count'] === 'number') return obj['count'];
+          }
+          return 0;
+        }
+
+        let categoriesCount = resolveCategoriesCount(categories);
+
         setStats([
-          { number: String(childrenCount), label: 'Children Profiles', icon: Heart },
-          { number: String(photos.count), label: 'Gallery Photos', icon: Target },
-          { number: String(testimonials.count), label: 'Community Voices', icon: Users },
-          { number: String(categories.length), label: 'Gallery Categories', icon: Church },
+          { number: String(childrenCount),             label: 'Children Profiles',   icon: Heart  },
+          { number: String(photos?.count ?? 0),        label: 'Gallery Photos',      icon: Target },
+          { number: String(testimonials?.count ?? 0),  label: 'Community Voices',    icon: Users  },
+          { number: String(categoriesCount),           label: 'Gallery Categories',  icon: Church },
         ]);
       } catch {
-        // Keep placeholders if public stats endpoints are temporarily unavailable.
+        // Keep placeholder dashes if any endpoint is temporarily unavailable
       }
     }
 
