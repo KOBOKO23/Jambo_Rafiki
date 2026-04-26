@@ -584,9 +584,11 @@ export const api = {
   // Auth API
   auth: {
     csrf: async (): Promise<string> => {
-      const data = await requestJson<{ csrf_token: string }>(API_PATHS.authCsrf);
-      return data.csrf_token;
-    },
+  const data = await requestJson<{ csrf_token: string }>(
+    `${API_PATHS.authCsrf}?_=${Date.now()}`
+  );
+  return data.csrf_token;
+},
 
     login: async (email: string, password: string) => {
       // Read CSRF token from response body — cookie is unreadable cross-subdomain
