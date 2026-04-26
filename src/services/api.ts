@@ -84,7 +84,6 @@ function resolveApiBaseUrl(): string {
 }
 
 const API_BASE_URL = resolveApiBaseUrl();
-const { enableCredentials } = getRuntimeEnv();
 
 const JSON_HEADERS = {
   'Content-Type': 'application/json',
@@ -558,7 +557,8 @@ function buildRequestInit(init?: RequestInit): RequestInit {
     headers.set('Content-Type', 'application/json');
   }
 
-  if (enableCredentials && MUTATING_METHODS.has(method)) {
+  // Always attach CSRF token on mutating requests, regardless of enableCredentials
+  if (MUTATING_METHODS.has(method)) {
     const csrfToken = getCookieValue('csrftoken');
     if (csrfToken && !headers.has('X-CSRFToken')) {
       headers.set('X-CSRFToken', csrfToken);
@@ -569,7 +569,7 @@ function buildRequestInit(init?: RequestInit): RequestInit {
     ...init,
     method,
     headers,
-    credentials: enableCredentials ? 'include' : init?.credentials,
+    credentials: 'include', // always send cookies cross-site
   };
 }
 
@@ -611,12 +611,19 @@ export const api = {
     },
 
     login: async (email: string, password: string) => {
-      return requestJson<AdminLoginResponse>(API_PATHS.authLogin, {
-        method: 'POST',
-        headers: JSON_HEADERS,
-        body: JSON.stringify({ email, password }),
-      });
-    },
+  // Fetch a fresh CSRF token immediately before the login POST
+  // so the csrftoken cookie is guaranteed to be set
+  try {
+    await requestJson<{ csrf_token: string }>(API_PATHS.authCsrf);
+  } catch {
+    // Non-blocking — attempt login anyway
+  }
+  return requestJson<AdminLoginResponse>(API_PATHS.authLogin, {
+    method: 'POST',
+    headers: JSON_HEADERS,
+    body: JSON.stringify({ email, password }),
+  });
+},
 
     logout: async () => {
       return requestJson<{ message: string }>(API_PATHS.authLogout, {
