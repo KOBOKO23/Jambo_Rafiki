@@ -5,7 +5,7 @@
       "destination": "https://api.jamborafiki.org/api/v1/:path*"
     },
     {
-      "source": "/((?!assets/).*)",
+      "source": "/((?!api/).*)",
       "destination": "/index.html"
     }
   ],
