@@ -120,6 +120,7 @@ function LeftPanel({
         {/* Pay with label */}
         <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500 mb-3">Pay with</p>
 
+
         {/* Method tiles */}
         <div className="flex flex-col gap-2.5">
           {methods.map(m => {
@@ -156,6 +157,17 @@ function LeftPanel({
               </button>
             );
           })}
+
+          {/* Simple PayPal button */}
+          <a
+            href="https://www.paypal.me/JJRafiki7"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 block w-full rounded-2xl border-2 border-blue-400 bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold text-center py-3 px-4 text-sm tracking-wide transition-all"
+            style={{ minHeight: 44 }}
+          >
+            Donate with PayPal
+          </a>
         </div>
 
         {/* Divider */}
