@@ -611,11 +611,20 @@ export const api = {
     },
 
     logout: async () => {
-      return requestJson<{ message: string }>(API_PATHS.authLogout, {
-        method: 'POST',
-        headers: JSON_HEADERS,
-      });
+  let csrfToken = '';
+  try {
+    csrfToken = await api.auth.csrf();
+  } catch {
+    // Non-blocking
+  }
+  return requestJson<{ message: string }>(API_PATHS.authLogout, {
+    method: 'POST',
+    headers: {
+      ...JSON_HEADERS,
+      ...(csrfToken ? { 'X-CSRFToken': csrfToken } : {}),
     },
+  });
+},
 
     currentUser: async <T = AdminUserProfile>() => {
       return requestJson<T>(API_PATHS.authCurrentUser);
