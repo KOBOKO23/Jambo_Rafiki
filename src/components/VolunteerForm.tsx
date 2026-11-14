@@ -64,7 +64,7 @@ export function VolunteerForm() {
   return (
     <div className="bg-white border-2 border-gray-100 rounded-2xl p-8 shadow-lg">
       <div className="flex items-center space-x-3 mb-6">
-        <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center">
+        <div className="w-12 h-12 bg-gradient-to-br from-leaf-500 to-clay-600 rounded-lg flex items-center justify-center">
           <UserPlus className="h-6 w-6 text-white" />
         </div>
         <h3 className="text-2xl text-gray-900">Volunteer Application</h3>
@@ -83,7 +83,7 @@ export function VolunteerForm() {
             type="text"
             id="name"
             required
-            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none transition-colors"
+            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-leaf-500 focus:outline-none transition-colors"
             placeholder="John Doe"
             value={formData.name}
             onChange={handleChange}
@@ -98,7 +98,7 @@ export function VolunteerForm() {
             type="email"
             id="email"
             required
-            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none transition-colors"
+            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-leaf-500 focus:outline-none transition-colors"
             placeholder="john@example.com"
             value={formData.email}
             onChange={handleChange}
@@ -113,7 +113,7 @@ export function VolunteerForm() {
             type="text"
             id="location"
             required
-            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none transition-colors"
+            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-leaf-500 focus:outline-none transition-colors"
             placeholder="e.g., Nairobi, Kenya"
             value={formData.location}
             onChange={handleChange}
@@ -127,7 +127,7 @@ export function VolunteerForm() {
           <input
             type="tel"
             id="phone"
-            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none transition-colors"
+            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-leaf-500 focus:outline-none transition-colors"
             placeholder="+254 XXX XXX XXX"
             value={formData.phone}
             onChange={handleChange}
@@ -142,7 +142,7 @@ export function VolunteerForm() {
             type="text"
             id="skills"
             required
-            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none transition-colors"
+            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-leaf-500 focus:outline-none transition-colors"
             placeholder="e.g., Teaching, Healthcare, Administration"
             value={formData.skills}
             onChange={handleChange}
@@ -156,7 +156,7 @@ export function VolunteerForm() {
           <select
             id="availability"
             required
-            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none transition-colors"
+            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-leaf-500 focus:outline-none transition-colors"
             value={formData.availability}
             onChange={handleChange}
           >
@@ -176,7 +176,7 @@ export function VolunteerForm() {
           <select
             id="duration"
             required
-            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none transition-colors"
+            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-leaf-500 focus:outline-none transition-colors"
             value={formData.duration}
             onChange={handleChange}
           >
@@ -197,7 +197,7 @@ export function VolunteerForm() {
             id="motivation"
             required
             rows={4}
-            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-purple-500 focus:outline-none transition-colors resize-none"
+            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-leaf-500 focus:outline-none transition-colors resize-none"
             placeholder="Tell us about your motivation and how you'd like to contribute..."
             value={formData.motivation}
             onChange={handleChange}
@@ -207,7 +207,7 @@ export function VolunteerForm() {
         <button
           type="submit"
           disabled={status === 'loading'}
-          className="w-full bg-gradient-to-r from-purple-500 to-pink-600 text-white px-8 py-4 rounded-lg hover:shadow-xl hover:scale-105 transition-all flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-gradient-to-r from-leaf-500 to-clay-600 text-white px-8 py-4 rounded-lg hover:shadow-xl hover:scale-105 transition-all flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {status === 'loading' ? (
             <>

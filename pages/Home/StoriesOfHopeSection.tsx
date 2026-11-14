@@ -21,7 +21,7 @@ export default function StoriesOfHopeSection() {
   ];
 
   return (
-    <section className="bg-gradient-to-br from-purple-50 to-pink-50 py-20">
+    <section className="bg-gradient-to-br from-leaf-50 to-clay-50 py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
@@ -32,7 +32,7 @@ export default function StoriesOfHopeSection() {
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Real children, real transformations, real impact
           </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-pink-500 mx-auto mt-4"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-clay-500 mx-auto mt-4"></div>
         </div>
 
         {/* Grid */}

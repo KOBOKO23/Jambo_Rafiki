@@ -3,7 +3,7 @@ import { Globe, ArrowRight } from 'lucide-react';
 export default function HeroSection() {
   return (
     <section className="relative bg-white overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-pink-50 to-purple-50 opacity-60"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-clay-50 to-leaf-50 opacity-60"></div>
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -25,7 +25,7 @@ export default function HeroSection() {
             <div className="flex flex-wrap gap-4">
               <a
                 href="/donations"
-                className="inline-flex items-center justify-center bg-gradient-to-r from-orange-500 to-pink-500 text-white px-8 py-4 rounded-full hover:shadow-xl hover:scale-105 transition-all"
+                className="inline-flex items-center justify-center bg-gradient-to-r from-orange-500 to-clay-500 text-white px-8 py-4 rounded-full hover:shadow-xl hover:scale-105 transition-all"
               >
                 Donate Now
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -50,7 +50,7 @@ export default function HeroSection() {
               />
             </div>
 
-            <div className="absolute -z-10 top-8 -right-8 w-72 h-72 bg-gradient-to-br from-orange-300 to-pink-300 rounded-full opacity-20 blur-3xl"></div>
+            <div className="absolute -z-10 top-8 -right-8 w-72 h-72 bg-gradient-to-br from-orange-300 to-clay-300 rounded-full opacity-20 blur-3xl"></div>
           </div>
 
         </div>

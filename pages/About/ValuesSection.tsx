@@ -5,10 +5,10 @@ const values = [
     name: 'Love',
     description: 'At the heart of everything we do',
     Icon: Heart,
-    accent: 'from-rose-500 to-pink-500',
-    light: 'bg-rose-50',
-    text: 'text-rose-600',
-    border: 'border-rose-100',
+    accent: 'from-clay-500 to-clay-500',
+    light: 'bg-clay-50',
+    text: 'text-clay-600',
+    border: 'border-clay-100',
   },
   {
     name: 'Patience',
@@ -32,10 +32,10 @@ const values = [
     name: 'Accountability',
     description: 'Responsible stewardship of resources',
     Icon: Scale,
-    accent: 'from-violet-500 to-purple-500',
-    light: 'bg-violet-50',
-    text: 'text-violet-600',
-    border: 'border-violet-100',
+    accent: 'from-leaf-500 to-leaf-500',
+    light: 'bg-leaf-50',
+    text: 'text-leaf-600',
+    border: 'border-leaf-100',
   },
   {
     name: 'Transparency',
@@ -50,7 +50,7 @@ const values = [
     name: 'Integrity',
     description: 'Upholding our moral principles',
     Icon: Shield,
-    accent: 'from-orange-500 to-pink-500',
+    accent: 'from-orange-500 to-clay-500',
     light: 'bg-orange-50',
     text: 'text-orange-600',
     border: 'border-orange-100',
@@ -59,10 +59,10 @@ const values = [
     name: 'Stewardship',
     description: 'Wise management of entrusted resources',
     Icon: Star,
-    accent: 'from-pink-500 to-rose-500',
-    light: 'bg-pink-50',
-    text: 'text-pink-600',
-    border: 'border-pink-100',
+    accent: 'from-clay-500 to-clay-500',
+    light: 'bg-clay-50',
+    text: 'text-clay-600',
+    border: 'border-clay-100',
   },
 ];
 
@@ -71,9 +71,9 @@ export default function ValuesSection() {
     <section className="py-24 bg-white relative overflow-hidden">
 
       {/* Subtle background decoration */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500" />
-      <div className="absolute -top-32 -right-32 w-96 h-96 bg-gradient-to-br from-orange-100 to-pink-100 rounded-full opacity-40 pointer-events-none" />
-      <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full opacity-30 pointer-events-none" />
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-clay-500 to-leaf-500" />
+      <div className="absolute -top-32 -right-32 w-96 h-96 bg-gradient-to-br from-orange-100 to-clay-100 rounded-full opacity-40 pointer-events-none" />
+      <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-gradient-to-br from-leaf-100 to-clay-100 rounded-full opacity-30 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
 
@@ -86,12 +86,12 @@ export default function ValuesSection() {
           <p className="text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed">
             The principles that guide our work and relationships with children and the community
           </p>
-          <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-pink-500 mx-auto mt-6 rounded-full" />
+          <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-clay-500 mx-auto mt-6 rounded-full" />
         </div>
 
         {/* Featured first value — Love — full width */}
         <div className="mb-6">
-          <div className="group relative bg-gradient-to-br from-rose-500 to-pink-600 rounded-3xl p-10 overflow-hidden">
+          <div className="group relative bg-gradient-to-br from-clay-500 to-clay-600 rounded-3xl p-10 overflow-hidden">
             {/* Decorative circles */}
             <div className="absolute -top-10 -right-10 w-48 h-48 bg-white/10 rounded-full pointer-events-none" />
             <div className="absolute -bottom-8 right-32 w-32 h-32 bg-white/5 rounded-full pointer-events-none" />

@@ -11,11 +11,11 @@ export function HeroSection() {
   return (
     <section className="relative overflow-hidden bg-white">
       {/* Gradient wash */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-orange-50 via-pink-50/40 to-white" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-orange-50 via-clay-50/40 to-white" />
 
       {/* Decorative circle blobs */}
-      <div className="pointer-events-none absolute -top-32 -right-32 h-96 w-96 rounded-full bg-gradient-to-br from-orange-200 to-pink-200 opacity-20 blur-3xl" />
-      <div className="pointer-events-none absolute bottom-0 -left-16 h-64 w-64 rounded-full bg-gradient-to-tr from-purple-200 to-pink-100 opacity-20 blur-3xl" />
+      <div className="pointer-events-none absolute -top-32 -right-32 h-96 w-96 rounded-full bg-gradient-to-br from-orange-200 to-clay-200 opacity-20 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 -left-16 h-64 w-64 rounded-full bg-gradient-to-tr from-leaf-200 to-clay-100 opacity-20 blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
         <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-2">
@@ -33,7 +33,7 @@ export function HeroSection() {
             <h1 className="text-5xl font-extrabold leading-tight tracking-tight text-gray-900 lg:text-6xl">
               Give a Child{' '}
               <span className="relative whitespace-nowrap">
-                <span className="relative z-10 bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent">
+                <span className="relative z-10 bg-gradient-to-r from-orange-500 to-clay-500 bg-clip-text text-transparent">
                   a Future
                 </span>
                 {/* underline squiggle */}
@@ -66,7 +66,7 @@ export function HeroSection() {
             <div className="mt-10 flex flex-wrap gap-3">
               <a
                 href="#donation-form"
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-orange-200 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-orange-300"
+                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-orange-500 to-clay-500 px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-orange-200 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-orange-300"
               >
                 <Heart className="h-4 w-4" fill="white" />
                 Donate Now
@@ -91,7 +91,7 @@ export function HeroSection() {
           {/* ── Right: image ── */}
           <div className="relative">
             {/* Shadow blob */}
-            <div className="absolute -inset-4 -z-10 rounded-[2.5rem] bg-gradient-to-br from-orange-200 to-pink-200 opacity-30 blur-2xl" />
+            <div className="absolute -inset-4 -z-10 rounded-[2.5rem] bg-gradient-to-br from-orange-200 to-clay-200 opacity-30 blur-2xl" />
 
             <div className="relative overflow-hidden rounded-[2rem] shadow-2xl shadow-orange-100">
               <img
@@ -105,7 +105,7 @@ export function HeroSection() {
 
               {/* Floating card */}
               <div className="absolute bottom-5 left-5 right-5 flex items-center gap-3 rounded-2xl border border-white/20 bg-white/90 px-4 py-3 backdrop-blur-sm">
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-pink-500 shadow-md">
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-clay-500 shadow-md">
                   <Heart className="h-5 w-5 text-white" fill="white" />
                 </div>
                 <div>

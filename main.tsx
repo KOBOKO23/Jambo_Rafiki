@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import '@fontsource-variable/fraunces';
+import '@fontsource-variable/inter';
 import './styles/globals.css';
 import { validateRuntimeEnv } from '@/config/runtimeEnv';
 

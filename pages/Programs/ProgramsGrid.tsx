@@ -5,7 +5,7 @@ const programs = [
     Icon: Church,
     title: 'Church Ministries',
     description: 'Church programmes for spiritual nourishment and faith development for the whole community.',
-    color: 'from-orange-500 to-pink-500',
+    color: 'from-orange-500 to-clay-500',
     light: 'bg-orange-50',
     iconColor: 'text-orange-600',
     border: 'border-orange-100',
@@ -16,10 +16,10 @@ const programs = [
     Icon: Users,
     title: 'Women Ministries',
     description: 'Empowerment of women through leadership, skills development, and community engagement.',
-    color: 'from-pink-500 to-rose-600',
-    light: 'bg-pink-50',
-    iconColor: 'text-pink-600',
-    border: 'border-pink-100',
+    color: 'from-clay-500 to-clay-600',
+    light: 'bg-clay-50',
+    iconColor: 'text-clay-600',
+    border: 'border-clay-100',
     tag: 'Empowerment',
     activities: ['Leadership training', 'Skills development', 'Resource management', 'Community engagement'],
   },
@@ -27,10 +27,10 @@ const programs = [
     Icon: Sparkles,
     title: 'Youth Ministries',
     description: 'A programme targeting young people to discover their talents and lead with confidence.',
-    color: 'from-purple-500 to-pink-600',
-    light: 'bg-purple-50',
-    iconColor: 'text-purple-600',
-    border: 'border-purple-100',
+    color: 'from-leaf-500 to-clay-600',
+    light: 'bg-leaf-50',
+    iconColor: 'text-leaf-600',
+    border: 'border-leaf-100',
     tag: 'Youth',
     activities: ['Talent development', 'Creative workshops', 'Leadership training', 'Innovation programs'],
   },
@@ -38,10 +38,10 @@ const programs = [
     Icon: Heart,
     title: 'Children Ministries',
     description: 'A psychosocial support programme dedicated to the holistic wellbeing of every child.',
-    color: 'from-rose-500 to-pink-600',
-    light: 'bg-rose-50',
-    iconColor: 'text-rose-600',
-    border: 'border-rose-100',
+    color: 'from-clay-500 to-clay-600',
+    light: 'bg-clay-50',
+    iconColor: 'text-clay-600',
+    border: 'border-clay-100',
     tag: 'Children',
     activities: ['Child development programs', 'Psychosocial support', 'Guidance and counselling', 'Child rights advocacy'],
   },
@@ -85,9 +85,9 @@ export default function ProgramsGrid() {
     <section className="py-24 bg-white relative overflow-hidden">
 
       {/* Background decoration */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500" />
-      <div className="absolute -top-32 -right-32 w-96 h-96 bg-gradient-to-br from-orange-50 to-pink-50 rounded-full opacity-60 pointer-events-none" />
-      <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-gradient-to-br from-purple-50 to-blue-50 rounded-full opacity-60 pointer-events-none" />
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-clay-500 to-leaf-500" />
+      <div className="absolute -top-32 -right-32 w-96 h-96 bg-gradient-to-br from-orange-50 to-clay-50 rounded-full opacity-60 pointer-events-none" />
+      <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-gradient-to-br from-leaf-50 to-blue-50 rounded-full opacity-60 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
 
@@ -96,11 +96,11 @@ export default function ProgramsGrid() {
           <p className="text-xs font-semibold uppercase tracking-widest text-orange-500 mb-3">
             What We Do
           </p>
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Programs</h2>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">How We Care</h2>
           <p className="text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed">
             Seven pillars of care, each designed to nurture a different dimension of every child's life
           </p>
-          <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-pink-500 mx-auto mt-6 rounded-full" />
+          <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-clay-500 mx-auto mt-6 rounded-full" />
         </div>
 
         {/* Featured first card — full width */}

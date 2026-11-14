@@ -94,7 +94,7 @@ function LeftPanel({
       sub: 'Visa / Mastercard',
       icon: <CreditCard className="w-5 h-5" />,
       activeColor: 'text-orange-700',
-      activeBg: 'bg-gradient-to-br from-orange-500 to-pink-500',
+      activeBg: 'bg-gradient-to-br from-orange-500 to-clay-500',
       activeBorder: 'border-orange-400',
       checkBg: 'bg-orange-500',
     },
@@ -105,7 +105,7 @@ function LeftPanel({
       {/* Branding */}
       <div>
         <div className="flex items-center gap-2.5 mb-6">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center shadow-md shadow-orange-300/40">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-400 to-clay-500 flex items-center justify-center shadow-md shadow-orange-300/40">
             <Heart className="w-4 h-4 text-white" fill="white" />
           </div>
           <div>
@@ -186,7 +186,7 @@ function LeftPanel({
               onClick={() => onDonationTypeChange(val)}
               className={`flex-1 py-2.5 text-xs font-bold transition-all ${
                 donationType === val
-                  ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white'
+                  ? 'bg-gradient-to-r from-orange-500 to-clay-500 text-white'
                   : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
               }`}
             >
@@ -370,7 +370,7 @@ function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMetho
         <div className="rounded-3xl overflow-hidden shadow-2xl shadow-slate-200 flex flex-col sm:flex-row min-h-[320px]">
           {/* Left accent */}
           <div className="sm:w-2/5 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8 flex flex-col items-center justify-center text-center">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center shadow-xl shadow-orange-900/40 mb-4">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-400 to-clay-500 flex items-center justify-center shadow-xl shadow-orange-900/40 mb-4">
               <Sparkles className="w-8 h-8 text-white" />
             </div>
             <p className="text-white font-extrabold text-xl leading-tight">Thank you!</p>
@@ -406,7 +406,7 @@ function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMetho
         <div className="lg:w-[38%] bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 p-7 relative overflow-hidden flex-shrink-0">
           {/* decorative blobs */}
           <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-orange-500/10 blur-2xl pointer-events-none" />
-          <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full bg-pink-500/10 blur-2xl pointer-events-none" />
+          <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full bg-clay-500/10 blur-2xl pointer-events-none" />
           <div className="relative h-full">
             <LeftPanel
               paymentMethod={paymentMethod}
@@ -579,7 +579,7 @@ function DonationFormInner({ initialAmount, selectionSignal, initialPaymentMetho
               <button
                 type="submit"
                 disabled={status === 'submitting' || !detailsValid}
-                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white text-sm font-bold shadow-lg shadow-orange-200 hover:shadow-xl hover:shadow-orange-200 hover:-translate-y-0.5 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed disabled:translate-y-0 flex items-center justify-center gap-2"
+                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-orange-500 to-clay-500 text-white text-sm font-bold shadow-lg shadow-orange-200 hover:shadow-xl hover:shadow-orange-200 hover:-translate-y-0.5 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed disabled:translate-y-0 flex items-center justify-center gap-2"
               >
                 {status === 'submitting' ? (
                   <><Loader2 className="w-4 h-4 animate-spin" /> Processing…</>

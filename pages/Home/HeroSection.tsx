@@ -1,11 +1,15 @@
 // HeroSection.tsx
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
-import { api, type GalleryPhoto } from '@/services/api';
+import { ArrowRight, Heart } from 'lucide-react';
+import { api } from '@/services/api';
+import { toAbsoluteImageUrl } from '../Gallery/usePaginatedGalleryPhotos';
+
+const FALLBACK_IMAGE = '/images/director_students.webp';
 
 export default function HeroSection() {
-  const [_heroPhoto, setHeroPhoto] = useState<GalleryPhoto | null>(null);
+  // A photo marked "featured" in the Gallery CMS replaces the built-in hero image.
+  const [heroUrl, setHeroUrl] = useState<string | null>(null);
 
   useEffect(() => {
     let mounted = true;
@@ -13,16 +17,11 @@ export default function HeroSection() {
     async function loadHeroPhoto() {
       try {
         const featured = await api.gallery.listFeaturedPhotos();
-        if (!mounted) return;
-        if (featured.length > 0) {
-          setHeroPhoto(featured[0]);
-          return;
-        }
-        const random = await api.gallery.listRandomPhotos(1);
-        if (!mounted) return;
-        setHeroPhoto(random[0] ?? null);
+        if (!mounted || featured.length === 0) return;
+        const url = toAbsoluteImageUrl(featured[0].image_url || featured[0].image);
+        if (url) setHeroUrl(url);
       } catch {
-        // silently ignore photo load errors — static fallback image is shown
+        // keep the built-in image
       }
     }
 
@@ -33,45 +32,51 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section className="relative bg-gradient-to-br from-orange-50 via-pink-50 to-purple-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8">
-            <span className="inline-block bg-gradient-to-r from-orange-500 to-pink-500 text-white px-4 py-2 rounded-full text-sm">
-              Building Resilience • Restoring Hope
-            </span>
-            <h1 className="text-5xl lg:text-6xl text-gray-900 leading-tight">Jambo Rafiki</h1>
-            <p className="text-xl text-gray-700 leading-relaxed">Children Orphanage and Church Centre</p>
-            <p className="text-lg text-gray-600 leading-relaxed">
-              We provide social protection to orphaned and vulnerable children, restoring their dignity and hope for the future through love, care, and sustainable development.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                to="/get-involved"
-                className="inline-flex items-center justify-center bg-gradient-to-r from-orange-500 to-pink-500 text-white px-8 py-4 rounded-full hover:shadow-xl hover:scale-105 transition-all"
-              >
-                Make a Difference
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-              <Link
-                to="/about"
-                className="inline-flex items-center justify-center border-2 border-orange-500 text-orange-600 px-8 py-4 rounded-full hover:bg-orange-50 transition-all"
-              >
-                Learn More
-              </Link>
-            </div>
-          </div>
+    <section className="relative overflow-hidden bg-gradient-to-b from-orange-50 via-orange-50/40 to-white">
+      <div aria-hidden="true" className="pointer-events-none absolute -right-40 -top-40 h-[28rem] w-[28rem] rounded-full bg-orange-200/40 blur-3xl" />
+      <div aria-hidden="true" className="pointer-events-none absolute -left-32 bottom-0 h-80 w-80 rounded-full bg-leaf-100/70 blur-3xl" />
 
-          <div className="relative">
-            <div className="aspect-[4/3] bg-gradient-to-br from-orange-200 to-pink-200 rounded-2xl shadow-2xl overflow-hidden">
-              <img
-                src="/images/director_students.webp"
-                alt="Children at Jambo Rafiki"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="absolute -top-4 -right-4 w-24 h-24 bg-orange-300 rounded-full opacity-50 blur-xl" />
-            <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-pink-300 rounded-full opacity-50 blur-xl" />
+      <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-4 pb-24 pt-12 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:px-8 lg:pb-32 lg:pt-20">
+        <div>
+          <p className="mb-5 inline-flex items-center gap-2 rounded-full bg-white px-4 py-1.5 text-sm font-medium text-orange-700 shadow-sm ring-1 ring-orange-100">
+            <span className="h-1.5 w-1.5 rounded-full bg-orange-500" aria-hidden="true" />
+            Building resilience &middot; Restoring hope
+          </p>
+          <h1 className="text-4xl leading-[1.05] sm:text-5xl lg:text-[4.25rem]">
+            Every child deserves to be <span className="italic text-orange-600">loved</span>, safe and in school.
+          </h1>
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-gray-600">
+            Jambo Rafiki is a children&rsquo;s home and church centre in Oyugis, Kenya. We give orphaned and vulnerable
+            children food, education, healthcare and a family, restoring their dignity and hope for the future.
+          </p>
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <Link
+              to="/donations"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-orange-600 px-7 py-3.5 font-semibold text-white shadow-lg shadow-orange-600/25 transition hover:-translate-y-0.5 hover:bg-orange-700"
+            >
+              <Heart className="h-5 w-5" fill="currentColor" aria-hidden="true" />
+              Support a child
+            </Link>
+            <Link
+              to="/about"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-7 py-3.5 font-semibold text-gray-800 transition hover:border-gray-400 hover:bg-gray-50"
+            >
+              Our story <ArrowRight className="h-5 w-5" aria-hidden="true" />
+            </Link>
+          </div>
+        </div>
+
+        <div className="relative mx-auto w-full max-w-md lg:max-w-none">
+          <div className="aspect-[4/5] overflow-hidden rounded-[2rem] bg-orange-100 shadow-2xl ring-8 ring-white sm:aspect-[5/5] lg:aspect-[4/5]">
+            <img
+              src={heroUrl ?? FALLBACK_IMAGE}
+              alt="Children at Jambo Rafiki"
+              className="h-full w-full object-cover"
+              loading="eager"
+              onError={(e) => {
+                if (e.currentTarget.src.indexOf(FALLBACK_IMAGE) === -1) e.currentTarget.src = FALLBACK_IMAGE;
+              }}
+            />
           </div>
         </div>
       </div>

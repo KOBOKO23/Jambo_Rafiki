@@ -51,7 +51,7 @@ export function Navigation() {
                   alt="Jambo Rafiki Logo"
                   className="h-12 w-12 object-cover rounded-xl shadow-md group-hover:shadow-orange-200 transition-shadow duration-300"
                 />
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-br from-orange-400 to-pink-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <span className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-br from-orange-400 to-clay-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
               <div className="leading-tight">
                 <p className="text-sm font-bold tracking-widest text-orange-600 uppercase">Jambo Rafiki</p>
@@ -73,7 +73,7 @@ export function Navigation() {
                 >
                   {item.label}
                   {isActive(item.path) && (
-                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full" />
+                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-gradient-to-r from-orange-500 to-clay-500 rounded-full" />
                   )}
                 </Link>
               ))}
@@ -82,7 +82,7 @@ export function Navigation() {
             {/* Desktop CTA */}
             <Link
               to="/donations"
-              className="hidden md:flex items-center gap-2 bg-gradient-to-r from-orange-500 to-pink-500 text-white text-sm font-semibold px-5 py-2.5 rounded-full shadow-md shadow-orange-200 hover:shadow-lg hover:shadow-orange-300 hover:-translate-y-0.5 transition-all duration-200"
+              className="hidden md:flex items-center gap-2 bg-gradient-to-r from-orange-500 to-clay-500 text-white text-sm font-semibold px-5 py-2.5 rounded-full shadow-md shadow-orange-200 hover:shadow-lg hover:shadow-orange-300 hover:-translate-y-0.5 transition-all duration-200"
             >
               <Heart className="h-4 w-4" fill="white" />
               Donate Now
@@ -127,7 +127,7 @@ export function Navigation() {
               <Link
                 to="/donations"
                 onClick={() => setIsOpen(false)}
-                className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-orange-500 to-pink-500 text-white text-sm font-semibold px-4 py-3.5 rounded-xl shadow-md"
+                className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-orange-500 to-clay-500 text-white text-sm font-semibold px-4 py-3.5 rounded-xl shadow-md"
               >
                 <Heart className="h-4 w-4" fill="white" />
                 Donate Now

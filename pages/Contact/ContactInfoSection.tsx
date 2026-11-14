@@ -20,8 +20,8 @@ export default function ContactInfoSection() {
       <div className="space-y-6 mb-8">
 
         {/* Contact Person */}
-        <div className="flex items-start space-x-4 p-6 bg-gradient-to-r from-orange-50 to-pink-50 rounded-xl">
-          <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-pink-500 rounded-lg flex items-center justify-center">
+        <div className="flex items-start space-x-4 p-6 bg-gradient-to-r from-orange-50 to-clay-50 rounded-xl">
+          <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-clay-500 rounded-lg flex items-center justify-center">
             <User className="h-6 w-6 text-white" />
           </div>
           <div>
@@ -31,8 +31,8 @@ export default function ContactInfoSection() {
         </div>
 
         {/* Email */}
-        <div className="flex items-start space-x-4 p-6 bg-gradient-to-r from-orange-50 to-pink-50 rounded-xl">
-          <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-pink-500 rounded-lg flex items-center justify-center">
+        <div className="flex items-start space-x-4 p-6 bg-gradient-to-r from-orange-50 to-clay-50 rounded-xl">
+          <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-clay-500 rounded-lg flex items-center justify-center">
             <Mail className="h-6 w-6 text-white" />
           </div>
           <div>
@@ -48,8 +48,8 @@ export default function ContactInfoSection() {
 
         {/* Call (NO URL exposed) */}
         {callNumber ? (
-          <div className="flex items-start space-x-4 p-6 bg-gradient-to-r from-orange-50 to-pink-50 rounded-xl">
-            <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-pink-500 rounded-lg flex items-center justify-center">
+          <div className="flex items-start space-x-4 p-6 bg-gradient-to-r from-orange-50 to-clay-50 rounded-xl">
+            <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-clay-500 rounded-lg flex items-center justify-center">
               <Phone className="h-6 w-6 text-white" />
             </div>
 
@@ -67,8 +67,8 @@ export default function ContactInfoSection() {
         ) : null}
 
         {/* Postal Address */}
-        <div className="flex items-start space-x-4 p-6 bg-gradient-to-r from-orange-50 to-pink-50 rounded-xl">
-          <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-pink-500 rounded-lg flex items-center justify-center">
+        <div className="flex items-start space-x-4 p-6 bg-gradient-to-r from-orange-50 to-clay-50 rounded-xl">
+          <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-clay-500 rounded-lg flex items-center justify-center">
             <MapPin className="h-6 w-6 text-white" />
           </div>
           <div>
@@ -86,7 +86,7 @@ export default function ContactInfoSection() {
 
       </div>
 
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-xl">
+      <div className="bg-gradient-to-br from-blue-50 to-leaf-50 p-6 rounded-xl">
         <h3 className="text-xl text-gray-900 mb-3">Office Hours</h3>
         <p className="text-gray-700 mb-4">
           We welcome visitors and volunteers. Please contact us in advance to schedule a visit.

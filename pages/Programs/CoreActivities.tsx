@@ -4,16 +4,16 @@ const coreActivities = [
   {
     text: 'Church services for spiritual growth',
     Icon: Church,
-    accent: 'from-violet-500 to-purple-600',
-    light: 'bg-violet-50',
-    iconColor: 'text-violet-500',
-    border: 'border-violet-100',
+    accent: 'from-leaf-500 to-leaf-600',
+    light: 'bg-leaf-50',
+    iconColor: 'text-leaf-500',
+    border: 'border-leaf-100',
     tag: 'Spiritual',
   },
   {
     text: 'Daily feeding program for orphaned children',
     Icon: UtensilsCrossed,
-    accent: 'from-orange-500 to-pink-500',
+    accent: 'from-orange-500 to-clay-500',
     light: 'bg-orange-50',
     iconColor: 'text-orange-500',
     border: 'border-orange-100',
@@ -22,10 +22,10 @@ const coreActivities = [
   {
     text: 'Clothing distribution to orphans',
     Icon: Shirt,
-    accent: 'from-pink-500 to-rose-500',
-    light: 'bg-pink-50',
-    iconColor: 'text-pink-500',
-    border: 'border-pink-100',
+    accent: 'from-clay-500 to-clay-500',
+    light: 'bg-clay-50',
+    iconColor: 'text-clay-500',
+    border: 'border-clay-100',
     tag: 'Clothing',
   },
   {
@@ -67,19 +67,19 @@ const coreActivities = [
   {
     text: 'Professional guidance and counselling services',
     Icon: HeartHandshake,
-    accent: 'from-rose-500 to-pink-600',
-    light: 'bg-rose-50',
-    iconColor: 'text-rose-500',
-    border: 'border-rose-100',
+    accent: 'from-clay-500 to-clay-600',
+    light: 'bg-clay-50',
+    iconColor: 'text-clay-500',
+    border: 'border-clay-100',
     tag: 'Counselling',
   },
   {
     text: 'Child rights advocacy and protection',
     Icon: Scale,
-    accent: 'from-indigo-500 to-violet-600',
-    light: 'bg-indigo-50',
-    iconColor: 'text-indigo-500',
-    border: 'border-indigo-100',
+    accent: 'from-leaf-500 to-leaf-600',
+    light: 'bg-leaf-50',
+    iconColor: 'text-leaf-500',
+    border: 'border-leaf-100',
     tag: 'Advocacy',
   },
   {
@@ -98,9 +98,9 @@ export default function CoreActivities() {
     <section className="py-24 bg-white relative overflow-hidden">
 
       {/* Background decoration */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500" />
-      <div className="absolute -top-28 -left-28 w-80 h-80 bg-gradient-to-br from-sky-100 to-indigo-100 rounded-full opacity-40 pointer-events-none" />
-      <div className="absolute -bottom-28 -right-28 w-80 h-80 bg-gradient-to-br from-orange-100 to-pink-100 rounded-full opacity-40 pointer-events-none" />
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-clay-500 to-leaf-500" />
+      <div className="absolute -top-28 -left-28 w-80 h-80 bg-gradient-to-br from-sky-100 to-leaf-100 rounded-full opacity-40 pointer-events-none" />
+      <div className="absolute -bottom-28 -right-28 w-80 h-80 bg-gradient-to-br from-orange-100 to-clay-100 rounded-full opacity-40 pointer-events-none" />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
 
@@ -113,7 +113,7 @@ export default function CoreActivities() {
           <p className="text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed">
             Daily operations and activities that make a real difference in children's lives
           </p>
-          <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-pink-500 mx-auto mt-6 rounded-full" />
+          <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-clay-500 mx-auto mt-6 rounded-full" />
         </div>
 
         {/* Grid */}

@@ -4,7 +4,7 @@ const objectives = [
   {
     text: 'Provide basic needs to orphans and vulnerable children',
     Icon: ShieldCheck,
-    accent: 'from-orange-500 to-pink-500',
+    accent: 'from-orange-500 to-clay-500',
     light: 'bg-orange-50',
     iconColor: 'text-orange-500',
     border: 'border-orange-100',
@@ -13,10 +13,10 @@ const objectives = [
   {
     text: 'Strengthen the capacity of children to realize their potential',
     Icon: Sparkles,
-    accent: 'from-violet-500 to-purple-500',
-    light: 'bg-violet-50',
-    iconColor: 'text-violet-500',
-    border: 'border-violet-100',
+    accent: 'from-leaf-500 to-leaf-500',
+    light: 'bg-leaf-50',
+    iconColor: 'text-leaf-500',
+    border: 'border-leaf-100',
     label: 'Potential',
   },
   {
@@ -53,8 +53,8 @@ export default function ObjectivesList() {
     <section className="py-24 bg-white relative overflow-hidden">
 
       {/* Background decoration */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500" />
-      <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-gradient-to-br from-orange-100 to-pink-100 rounded-full opacity-40 pointer-events-none" />
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-clay-500 to-leaf-500" />
+      <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-gradient-to-br from-orange-100 to-clay-100 rounded-full opacity-40 pointer-events-none" />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative">
 
@@ -64,7 +64,7 @@ export default function ObjectivesList() {
             What We're Here to Do
           </p>
           <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Core Objectives</h2>
-          <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-pink-500 mx-auto rounded-full" />
+          <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-clay-500 mx-auto rounded-full" />
         </div>
 
         {/* Objectives */}

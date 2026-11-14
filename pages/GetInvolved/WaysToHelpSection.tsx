@@ -6,7 +6,7 @@ const ways = [
     Icon: DollarSign,
     title: 'Financial Donations',
     description: 'Your financial support helps us provide food, education, healthcare, and shelter to 30 children in our care.',
-    color: 'from-orange-500 to-pink-500',
+    color: 'from-orange-500 to-clay-500',
     light: 'bg-orange-50',
     iconColor: 'text-orange-600',
     border: 'border-orange-100',
@@ -33,10 +33,10 @@ const ways = [
     Icon: UserPlus,
     title: 'Volunteer',
     description: 'Share your time, skills, and talents with our children. Volunteer visits are highly appreciated and create lasting impact.',
-    color: 'from-purple-500 to-pink-600',
-    light: 'bg-purple-50',
-    iconColor: 'text-purple-600',
-    border: 'border-purple-100',
+    color: 'from-leaf-500 to-clay-600',
+    light: 'bg-leaf-50',
+    iconColor: 'text-leaf-600',
+    border: 'border-leaf-100',
     tag: 'Volunteer',
     subject: 'volunteer',
     message: 'Hello, I am interested in volunteering with Jambo Rafiki. Please share the next steps and requirements.',
@@ -47,10 +47,10 @@ const ways = [
     Icon: Heart,
     title: 'Prayer Support',
     description: 'Join us in prayer for our children, staff, and the sustainability of our programs. Spiritual support is invaluable.',
-    color: 'from-rose-500 to-pink-500',
-    light: 'bg-rose-50',
-    iconColor: 'text-rose-600',
-    border: 'border-rose-100',
+    color: 'from-clay-500 to-clay-500',
+    light: 'bg-clay-50',
+    iconColor: 'text-clay-600',
+    border: 'border-clay-100',
     tag: 'Prayer',
     subject: 'general',
     message: 'Hello, I would like to support Jambo Rafiki through prayer and church collaboration. Please let me know how to join.',
@@ -69,9 +69,9 @@ export default function WaysToHelpSection() {
     <section className="py-24 bg-white relative overflow-hidden">
 
       {/* Background decoration */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500" />
-      <div className="absolute -top-32 -left-32 w-96 h-96 bg-gradient-to-br from-orange-50 to-pink-50 rounded-full opacity-60 pointer-events-none" />
-      <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-gradient-to-br from-purple-50 to-pink-50 rounded-full opacity-50 pointer-events-none" />
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-clay-500 to-leaf-500" />
+      <div className="absolute -top-32 -left-32 w-96 h-96 bg-gradient-to-br from-orange-50 to-clay-50 rounded-full opacity-60 pointer-events-none" />
+      <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-gradient-to-br from-leaf-50 to-clay-50 rounded-full opacity-50 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
 
@@ -86,7 +86,7 @@ export default function WaysToHelpSection() {
           <p className="text-lg text-gray-500 max-w-3xl mx-auto leading-relaxed">
             Every contribution, big or small, transforms lives. Choose how you'd like to support our mission.
           </p>
-          <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-pink-500 mx-auto mt-6 rounded-full" />
+          <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-clay-500 mx-auto mt-6 rounded-full" />
         </div>
 
         {/* Featured card — Financial Donations */}

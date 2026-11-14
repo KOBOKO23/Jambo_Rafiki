@@ -4,4 +4,5 @@ export const CONTACT_INFO = {
   postalAddressLines: ['P.O Box 311 – 40222', 'OYUGIS - KENYA'],
   locationLabel: 'Oyugis, Kenya',
   mapsEmbedUrl: 'https://www.google.com/maps?q=Oyugis,Kenya&output=embed',
+  facebookUrl: 'https://www.facebook.com/share/18WHSiAAkr/',
 } as const;

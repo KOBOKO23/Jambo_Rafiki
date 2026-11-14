@@ -1,13 +1,23 @@
 import { useCallback, useEffect, useState } from 'react';
-import { API_BASE_URL, api } from '@/services/api';
+import { API_BASE_URL, api, type GalleryPhoto } from '@/services/api';
 
-function buildQuery(categorySlug?: string, pageSize = 24) {
+export type GalleryItem = {
+  id: number;
+  url: string;
+  title: string;
+  description: string;
+  categoryName: string;
+  dateTaken: string | null;
+};
+
+function buildQuery(categoryId?: string, pageSize = 24) {
   const params = new URLSearchParams();
   params.set('page_size', String(pageSize));
   params.set('ordering', '-created_at');
 
-  if (categorySlug) {
-    params.set('category', categorySlug);
+  // The backend filters on the category primary key (filterset_fields = ['category', ...]).
+  if (categoryId) {
+    params.set('category', categoryId);
   }
 
   return params.toString();
@@ -22,7 +32,7 @@ function extractQueryFromNext(next: string) {
   }
 }
 
-function toAbsoluteImageUrl(rawUrl: string): string {
+export function toAbsoluteImageUrl(rawUrl: string): string {
   if (!rawUrl) return '';
   if (/^https?:\/\//i.test(rawUrl)) return rawUrl;
 
@@ -37,15 +47,34 @@ function toAbsoluteImageUrl(rawUrl: string): string {
   }
 }
 
+function toGalleryItems(photos: GalleryPhoto[]): GalleryItem[] {
+  return photos
+    .map((photo) => ({
+      id: photo.id,
+      url: toAbsoluteImageUrl(photo.image_url || photo.image),
+      title: photo.title?.trim() ?? '',
+      description: photo.description?.trim() ?? '',
+      categoryName: photo.category_name ?? '',
+      dateTaken: photo.date_taken,
+    }))
+    .filter((item) => Boolean(item.url));
+}
+
+function mergeUnique(prev: GalleryItem[], next: GalleryItem[]) {
+  const seen = new Set(prev.map((item) => item.id));
+  return [...prev, ...next.filter((item) => !seen.has(item.id))];
+}
+
 type UsePaginatedGalleryPhotosOptions = {
-  categorySlug?: string;
+  categoryId?: string;
   pageSize?: number;
 };
 
 export function usePaginatedGalleryPhotos(options: UsePaginatedGalleryPhotosOptions = {}) {
-  const { categorySlug, pageSize = 24 } = options;
+  const { categoryId, pageSize = 24 } = options;
 
-  const [urls, setUrls] = useState<string[]>([]);
+  const [items, setItems] = useState<GalleryItem[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
   const [nextQuery, setNextQuery] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -58,22 +87,20 @@ export function usePaginatedGalleryPhotos(options: UsePaginatedGalleryPhotosOpti
     setError(null);
 
     try {
-      const response = await api.gallery.listPhotos(buildQuery(categorySlug, pageSize));
-      const mapped = response.results
-        .map((photo) => toAbsoluteImageUrl(photo.image_url || photo.image))
-        .filter((url): url is string => Boolean(url));
-
-      setUrls(Array.from(new Set(mapped)));
+      const response = await api.gallery.listPhotos(buildQuery(categoryId, pageSize));
+      setItems(mergeUnique([], toGalleryItems(response.results)));
+      setTotalCount(response.count ?? response.results.length);
       setNextQuery(response.next ? extractQueryFromNext(response.next) : null);
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unable to load gallery photos.';
-      setUrls([]);
+      setItems([]);
+      setTotalCount(0);
       setNextQuery(null);
       setError(message);
     } finally {
       setLoading(false);
     }
-  }, [categorySlug, pageSize]);
+  }, [categoryId, pageSize]);
 
   const loadMore = useCallback(async () => {
     if (!nextQuery || loadingMore || loading) {
@@ -84,11 +111,7 @@ export function usePaginatedGalleryPhotos(options: UsePaginatedGalleryPhotosOpti
 
     try {
       const response = await api.gallery.listPhotos(nextQuery);
-      const mapped = response.results
-        .map((photo) => toAbsoluteImageUrl(photo.image_url || photo.image))
-        .filter((url): url is string => Boolean(url));
-
-      setUrls((prev) => Array.from(new Set([...prev, ...mapped])));
+      setItems((prev) => mergeUnique(prev, toGalleryItems(response.results)));
       setNextQuery(response.next ? extractQueryFromNext(response.next) : null);
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unable to load more gallery photos.';
@@ -103,7 +126,8 @@ export function usePaginatedGalleryPhotos(options: UsePaginatedGalleryPhotosOpti
   }, [loadInitial]);
 
   return {
-    urls,
+    items,
+    totalCount,
     loading,
     loadingMore,
     error,

@@ -37,7 +37,7 @@ export default function RecentActivitiesSection() {
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Stay updated with what's happening at Jambo Rafiki
           </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-pink-500 mx-auto mt-4"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-clay-500 mx-auto mt-4"></div>
         </div>
 
         {/* Activities Grid */}
