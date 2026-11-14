@@ -65,7 +65,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         <aside className="hidden lg:flex w-72 flex-col border-r border-white/60 bg-slate-950/95 text-white shadow-2xl shadow-slate-900/20 sticky top-0 h-screen backdrop-blur-xl">
           <div className="px-6 py-5 border-b border-white/10">
             <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-pink-500 text-white shadow-lg shadow-orange-500/30">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-clay-500 text-white shadow-lg shadow-orange-500/30">
                 <Shield className="h-5 w-5" />
               </div>
               <div>
@@ -86,7 +86,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                   end={item.end}
                   className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm transition-colors ${
                     active
-                      ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg shadow-orange-500/20'
+                      ? 'bg-gradient-to-r from-orange-500 to-clay-500 text-white shadow-lg shadow-orange-500/20'
                       : 'text-slate-300 hover:bg-white/10 hover:text-white'
                   }`}
                 >
@@ -110,7 +110,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                 <h2 className="text-2xl font-semibold text-slate-900">{pageTitle}</h2>
               </div>
               <div className="flex items-center gap-3">
-                <div className="hidden md:flex items-center gap-3 rounded-full border border-orange-100 bg-gradient-to-r from-orange-50 to-pink-50 px-4 py-2 text-sm text-slate-700 shadow-sm">
+                <div className="hidden md:flex items-center gap-3 rounded-full border border-orange-100 bg-gradient-to-r from-orange-50 to-clay-50 px-4 py-2 text-sm text-slate-700 shadow-sm">
                   <UserCog className="h-4 w-4 text-orange-500" />
                   <span>{user?.email || 'Staff'}</span>
                 </div>

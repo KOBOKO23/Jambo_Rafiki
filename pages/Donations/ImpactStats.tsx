@@ -7,21 +7,21 @@ const impactStories = [
     title: 'Nourish a Child',
     amount: 1000,
     impact: 'Feeds one child for a full week',
-    color: 'from-blue-500 to-indigo-600',
+    color: 'from-blue-500 to-leaf-600',
   },
   {
     Icon: Gift,
     title: 'Empower Learning',
     amount: 5000,
     impact: 'School supplies for an entire term',
-    color: 'from-orange-500 to-pink-600',
+    color: 'from-orange-500 to-clay-600',
   },
   {
     Icon: HandHeart,
     title: 'Heal & Protect',
     amount: 10000,
     impact: 'Medical care for one child',
-    color: 'from-purple-500 to-pink-600',
+    color: 'from-leaf-500 to-clay-600',
   },
 ];
 
@@ -38,7 +38,7 @@ export function ImpactStats({ onSelectAmount }: { onSelectAmount?: (amount: numb
           <p className="mx-auto mt-3 max-w-xl text-lg text-gray-500">
             Every shilling you give goes directly to transforming a child's life.
           </p>
-          <div className="mx-auto mt-6 h-1 w-16 rounded-full bg-gradient-to-r from-orange-500 to-pink-500" />
+          <div className="mx-auto mt-6 h-1 w-16 rounded-full bg-gradient-to-r from-orange-500 to-clay-500" />
         </div>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">

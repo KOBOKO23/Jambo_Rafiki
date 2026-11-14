@@ -1,12 +1,12 @@
 // pages/Gallery/GalleryGrid.tsx
-import { useEffect, useMemo, useRef } from 'react';
-import { ZoomIn } from "lucide-react";
-import { useGalleryGrid } from "./useGalleryGrid";
-import { GalleryLightbox } from "./GalleryLightbox";
-const CELL = 200;
+// Masonry grid that keeps each photo's natural aspect ratio (no awkward crops).
+import { useEffect, useRef, useState } from 'react';
+import { Camera, Maximize2 } from 'lucide-react';
+import { GalleryLightbox } from './GalleryLightbox';
+import type { GalleryItem } from './usePaginatedGalleryPhotos';
 
 type GalleryGridProps = {
-  urls: string[];
+  items: GalleryItem[];
   loading: boolean;
   loadingMore: boolean;
   hasMore: boolean;
@@ -15,163 +15,146 @@ type GalleryGridProps = {
   onLoadMore: () => void;
 };
 
-// ─── Main Grid ────────────────────────────────────────────────────────────────
+const SKELETON_HEIGHTS = ['h-64', 'h-80', 'h-56', 'h-72', 'h-96', 'h-60', 'h-72', 'h-64'];
 
-export default function GalleryGrid({ urls, loading, loadingMore, hasMore, error, onRetry, onLoadMore }: GalleryGridProps) {
+function GalleryTile({ item, index, onOpen }: { item: GalleryItem; index: number; onOpen: () => void }) {
+  const [loaded, setLoaded] = useState(false);
+  const [failed, setFailed] = useState(false);
+
+  if (failed) return null;
+
+  const label = item.title || `Photo ${index + 1}`;
+
+  return (
+    <li className="mb-3 break-inside-avoid sm:mb-4">
+      <button
+        type="button"
+        onClick={onOpen}
+        aria-label={`Open photo: ${label}`}
+        className={`group relative block w-full overflow-hidden rounded-xl bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 ${
+          loaded ? '' : 'min-h-48 animate-pulse'
+        }`}
+      >
+        <img
+          ref={(el) => {
+            // Cached images can finish before React attaches onLoad.
+            if (el?.complete && el.naturalWidth > 0 && !loaded) setLoaded(true);
+          }}
+          src={item.url}
+          alt={item.description || label}
+          loading={index < 8 ? 'eager' : 'lazy'}
+          decoding="async"
+          onLoad={() => setLoaded(true)}
+          onError={() => setFailed(true)}
+          className="block h-auto w-full transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+        />
+        <span className="pointer-events-none absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/70 via-black/10 to-transparent p-4 text-left opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+          {item.categoryName && (
+            <span className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-orange-200">
+              {item.categoryName}
+            </span>
+          )}
+          <span className="font-display text-lg font-semibold leading-snug text-white">{label}</span>
+        </span>
+        <span className="pointer-events-none absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-gray-800 opacity-0 shadow transition-opacity duration-300 group-hover:opacity-100">
+          <Maximize2 className="h-4 w-4" aria-hidden="true" />
+        </span>
+      </button>
+    </li>
+  );
+}
+
+export default function GalleryGrid({ items, loading, loadingMore, hasMore, error, onRetry, onLoadMore }: GalleryGridProps) {
   const loaderRef = useRef<HTMLDivElement | null>(null);
-  const orderedUrls = useMemo(() => urls, [urls]);
-  const {
-    visible,
-    visibleUrls,
-    lightbox,
-    openLightbox,
-    closeLightbox,
-  } = useGalleryGrid(orderedUrls);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
+  // Infinite scroll: fetch the next page as the sentinel approaches the viewport.
   useEffect(() => {
     const el = loaderRef.current;
     if (!el || !hasMore) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          onLoadMore();
-        }
+        if (entry.isIntersecting) onLoadMore();
       },
-      { rootMargin: '400px' }
+      { rootMargin: '600px' }
     );
 
     observer.observe(el);
     return () => observer.disconnect();
   }, [hasMore, onLoadMore]);
 
+  const showSkeleton = loading && items.length === 0;
+  const showEmpty = !loading && !error && items.length === 0;
+
   return (
-    <section className="py-20 bg-gray-50 relative overflow-hidden">
-      <div className="absolute top-0 left-0 right-0 h-px bg-gray-200" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        {/* Header */}
-        <div className="text-center mb-12">
-          <p className="text-xs font-semibold uppercase tracking-widest text-orange-500 mb-3">
-            Our Moments
-          </p>
-          <h2 className="text-4xl font-bold text-gray-900 mb-3">Life at Jambo Rafiki</h2>
-          <p className="text-gray-500">Click any photo to view full size</p>
-          <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-pink-500 mx-auto mt-5 rounded-full" />
-        </div>
-
-        {/* Masonry grid */}
+    <section className="bg-white py-10 sm:py-14" aria-label="Photos">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {error && (
-          <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-            <p className="text-sm text-red-700">{error}</p>
+          <div className="mb-8 flex flex-col gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-sm text-red-700">We couldn&rsquo;t load the photos right now. {error}</p>
             <button
               type="button"
               onClick={onRetry}
-              className="self-start sm:self-auto rounded-full bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 transition-colors"
+              className="self-start rounded-full bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700 sm:self-auto"
             >
-              Retry
+              Try again
             </button>
           </div>
         )}
 
-        {loading && visible.length === 0 && (
-          <div className="min-h-[220px] flex items-center justify-center">
-            <div className="flex items-center gap-3 text-gray-500">
-              <div className="animate-spin rounded-full h-5 w-5 border-2 border-orange-500 border-t-transparent" />
-              <span className="text-sm">Loading gallery photos...</span>
+        {showSkeleton && (
+          <ul className="columns-2 gap-3 sm:gap-4 lg:columns-3 xl:columns-4" aria-label="Loading photos">
+            {SKELETON_HEIGHTS.map((h, i) => (
+              <li key={i} className={`mb-3 break-inside-avoid rounded-xl sm:mb-4 bg-gray-100 ${h} animate-pulse`} />
+            ))}
+          </ul>
+        )}
+
+        {showEmpty && (
+          <div className="mx-auto flex max-w-md flex-col items-center py-20 text-center">
+            <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-orange-50 text-orange-600">
+              <Camera className="h-7 w-7" aria-hidden="true" />
             </div>
+            <h2 className="text-2xl">New photos are on their way</h2>
+            <p className="mt-2 text-gray-600">
+              We&rsquo;re gathering fresh moments from Jambo Rafiki. Please check back soon.
+            </p>
           </div>
         )}
 
-        {!loading && !error && visible.length === 0 && (
-          <div className="min-h-[220px] flex items-center justify-center">
-            <p className="text-sm text-gray-500">No photos are available yet. Please check back soon.</p>
-          </div>
+        {items.length > 0 && (
+          <ul className="columns-2 gap-3 sm:gap-4 lg:columns-3 xl:columns-4">
+            {items.map((item, idx) => (
+              <GalleryTile key={item.id} item={item} index={idx} onOpen={() => setLightboxIndex(idx)} />
+            ))}
+          </ul>
         )}
 
-        <div
-          role="list"
-          style={{
-            display: "grid",
-            gridTemplateColumns: `repeat(auto-fill, minmax(${CELL}px, 1fr))`,
-            gridAutoRows: `${CELL}px`,
-            gridAutoFlow: "dense",
-            gap: "10px",
-          }}
-        >
-          {visible.map((item, idx) => (
+        <div ref={loaderRef} className="mt-10 flex min-h-12 items-center justify-center">
+          {loadingMore ? (
+            <div className="flex items-center gap-3 text-sm text-gray-500">
+              <div className="h-5 w-5 animate-spin rounded-full border-2 border-orange-500 border-t-transparent" />
+              Loading more photos&hellip;
+            </div>
+          ) : hasMore ? (
             <button
-              key={item.id}
               type="button"
-              onClick={() => openLightbox(idx)}
-              aria-label={`Open gallery image ${idx + 1}`}
-              style={{
-                gridColumn: `span ${item.span.col}`,
-                gridRow: `span ${item.span.row}`,
-                overflow: "hidden",
-                borderRadius: "14px",
-                background: "#e5e7eb",
-                cursor: "pointer",
-                position: "relative",
-              }}
-              className="group focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
+              onClick={onLoadMore}
+              className="rounded-full border border-gray-300 bg-white px-6 py-2.5 text-sm font-medium text-gray-800 transition-colors hover:border-gray-400 hover:bg-gray-50"
             >
-              <img
-                src={item.url}
-                alt={`Jambo Rafiki moment ${idx + 1}`}
-                loading={idx < 4 ? "eager" : "lazy"}
-                decoding="async"
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  display: "block",
-                  transition: "transform 0.5s ease",
-                }}
-                className="group-hover:scale-[1.06] group-focus-visible:scale-[1.06]"
-                onError={(e) => {
-                  (e.currentTarget.parentElement as HTMLElement).style.display = "none";
-                }}
-              />
-              {/* Hover overlay */}
-              <div
-                className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center"
-                style={{ borderRadius: "14px" }}
-              >
-                <ZoomIn className="h-8 w-8 text-white opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300 drop-shadow-lg" />
-              </div>
+              Load more photos
             </button>
-          ))}
-        </div>
-
-        {/* Loader / end */}
-        <div ref={loaderRef} className="mt-12 flex justify-center items-center h-12">
-          {loadingMore && (
-            <div className="flex items-center gap-3">
-              <div className="animate-spin rounded-full h-5 w-5 border-2 border-orange-500 border-t-transparent" />
-              <span className="text-gray-400 text-sm">Loading more moments…</span>
-            </div>
-          )}
-          {!hasMore && visible.length > 0 && (
-            <div className="flex items-center gap-3 text-gray-400 text-sm">
-              <div className="w-12 h-px bg-gradient-to-r from-transparent to-orange-300" />
-              <span>✦ All {visible.length} moments loaded</span>
-              <div className="w-12 h-px bg-gradient-to-l from-transparent to-pink-300" />
-            </div>
+          ) : (
+            items.length > 0 && (
+              <p className="text-sm text-gray-400">You&rsquo;ve seen all {items.length} photos</p>
+            )
           )}
         </div>
       </div>
 
-      {/* Lightbox */}
-      {lightbox.open && (
-        <GalleryLightbox
-          urls={visibleUrls}
-          index={lightbox.index}
-          onClose={closeLightbox}
-        />
+      {lightboxIndex !== null && (
+        <GalleryLightbox items={items} index={lightboxIndex} onClose={() => setLightboxIndex(null)} />
       )}
     </section>
   );

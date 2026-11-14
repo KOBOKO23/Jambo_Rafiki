@@ -257,12 +257,12 @@ function OverviewPage() {
     <div className="space-y-8">
       <SEO title="Dashboard" description="Jambo Rafiki CMS dashboard" path="/dashboard" noIndex />
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <OverviewCard title="Total Donations" value={String(donations.length)} icon={DollarSign as never} accent="from-orange-500 to-pink-500" />
-        <OverviewCard title="Unread Contacts" value={String(unreadContacts)} icon={FileText as never} accent="from-blue-500 to-indigo-500" />
+        <OverviewCard title="Total Donations" value={String(donations.length)} icon={DollarSign as never} accent="from-orange-500 to-clay-500" />
+        <OverviewCard title="Unread Contacts" value={String(unreadContacts)} icon={FileText as never} accent="from-blue-500 to-leaf-500" />
         <OverviewCard title="Pending Volunteers" value={String(pendingVolunteers)} icon={Users as never} accent="from-emerald-500 to-teal-500" />
-        <OverviewCard title="Pending Testimonials" value={String(pendingTestimonials)} icon={MessageSquareText as never} accent="from-purple-500 to-fuchsia-500" />
+        <OverviewCard title="Pending Testimonials" value={String(pendingTestimonials)} icon={MessageSquareText as never} accent="from-leaf-500 to-leaf-500" />
         <OverviewCard title="Subscribers" value={String(activeSubscribers)} icon={BellRing as never} accent="from-cyan-500 to-blue-500" />
-        <OverviewCard title="Gallery Photos" value={String(data?.galleryPhotos.length ?? 0)} icon={GalleryHorizontalEnd as never} accent="from-pink-500 to-rose-500" />
+        <OverviewCard title="Gallery Photos" value={String(data?.galleryPhotos.length ?? 0)} icon={GalleryHorizontalEnd as never} accent="from-clay-500 to-clay-500" />
         <OverviewCard title="Categories" value={String(data?.galleryCategories.length ?? 0)} icon={Sparkles as never} accent="from-amber-500 to-orange-500" />
         <OverviewCard title="Stale Processing" value={String((reconciliation as { stale_processing_count?: number } | null)?.stale_processing_count ?? 0)} icon={CalendarCheck2 as never} accent="from-slate-700 to-slate-900" />
       </section>
@@ -622,7 +622,7 @@ function MediaUploadForm({ onUploaded }: { onUploaded: () => void }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 rounded-[1.75rem] border border-orange-100 bg-white p-5 shadow-sm">
-      <div className="flex items-start gap-3 rounded-2xl bg-gradient-to-r from-orange-50 to-pink-50 px-4 py-3 text-sm text-slate-700">
+      <div className="flex items-start gap-3 rounded-2xl bg-gradient-to-r from-orange-50 to-clay-50 px-4 py-3 text-sm text-slate-700">
         <UploadCloud className="mt-0.5 h-5 w-5 text-orange-500" />
         <p>Choose the exact destination first, then add tags if you want the file to be searchable or reusable later.</p>
       </div>
@@ -700,7 +700,7 @@ function MediaUploadForm({ onUploaded }: { onUploaded: () => void }) {
           accept="image/*"
           onChange={(event) => setFile(event.target.files?.[0] ?? null)}
           required
-          className="block w-full rounded-2xl border border-dashed border-orange-200 bg-orange-50/60 px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-gradient-to-r file:from-orange-500 file:to-pink-500 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:bg-orange-50"
+          className="block w-full rounded-2xl border border-dashed border-orange-200 bg-orange-50/60 px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-gradient-to-r file:from-orange-500 file:to-clay-500 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:bg-orange-50"
         />
         {file && <p className="text-xs text-slate-500">Selected: {file.name}</p>}
       </label>
@@ -712,7 +712,7 @@ function MediaUploadForm({ onUploaded }: { onUploaded: () => void }) {
         <button
           type="submit"
           disabled={saving}
-          className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-orange-500/20 transition-transform hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-orange-500 to-clay-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-orange-500/20 transition-transform hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-60"
         >
           <UploadCloud className="h-4 w-4" />
           {saving ? 'Uploading...' : 'Upload media'}
@@ -800,7 +800,7 @@ function GalleryUploadForm({ onUploaded }: { onUploaded: () => void }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 rounded-[1.75rem] border border-orange-100 bg-white p-5 shadow-sm">
-      <div className="flex items-start gap-3 rounded-2xl bg-gradient-to-r from-orange-50 to-pink-50 px-4 py-3 text-sm text-slate-700">
+      <div className="flex items-start gap-3 rounded-2xl bg-gradient-to-r from-orange-50 to-clay-50 px-4 py-3 text-sm text-slate-700">
         <ImagePlus className="mt-0.5 h-5 w-5 text-orange-500" />
         <p>Upload a photo for the public gallery. Mark it featured if you want it to appear in the homepage hero or featured program blocks.</p>
       </div>
@@ -886,7 +886,7 @@ function GalleryUploadForm({ onUploaded }: { onUploaded: () => void }) {
           accept="image/*"
           onChange={(event) => setFile(event.target.files?.[0] ?? null)}
           required
-          className="block w-full rounded-2xl border border-dashed border-orange-200 bg-orange-50/60 px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-gradient-to-r file:from-orange-500 file:to-pink-500 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:bg-orange-50"
+          className="block w-full rounded-2xl border border-dashed border-orange-200 bg-orange-50/60 px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-gradient-to-r file:from-orange-500 file:to-clay-500 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:bg-orange-50"
         />
         {file && <p className="text-xs text-slate-500">Selected: {file.name}</p>}
       </label>
@@ -898,7 +898,7 @@ function GalleryUploadForm({ onUploaded }: { onUploaded: () => void }) {
         <button
           type="submit"
           disabled={saving}
-          className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-orange-500/20 transition-transform hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-orange-500 to-clay-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-orange-500/20 transition-transform hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-60"
         >
           <ImagePlus className="h-4 w-4" />
           {saving ? 'Uploading...' : 'Upload gallery photo'}
@@ -1220,7 +1220,7 @@ function SettingsAssetField({
           type="file"
           accept="image/*"
           onChange={(event) => setFile(event.target.files?.[0] ?? null)}
-          className="block w-full rounded-2xl border border-dashed border-orange-200 bg-orange-50/60 px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-gradient-to-r file:from-orange-500 file:to-pink-500 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:bg-orange-50"
+          className="block w-full rounded-2xl border border-dashed border-orange-200 bg-orange-50/60 px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-gradient-to-r file:from-orange-500 file:to-clay-500 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:bg-orange-50"
         />
         <div className="flex items-center justify-between gap-3">
           <p className="text-xs text-slate-500">{file ? file.name : 'Upload an image or paste a URL.'}</p>
@@ -1228,7 +1228,7 @@ function SettingsAssetField({
             type="button"
             onClick={() => void upload()}
             disabled={saving}
-            className="rounded-full bg-gradient-to-r from-orange-500 to-pink-500 px-4 py-2 text-xs font-semibold text-white shadow-lg shadow-orange-500/20 disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-full bg-gradient-to-r from-orange-500 to-clay-500 px-4 py-2 text-xs font-semibold text-white shadow-lg shadow-orange-500/20 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {saving ? 'Uploading...' : 'Upload'}
           </button>

@@ -90,7 +90,7 @@ export default function ContactForm() {
 
       {/* Header */}
       <div className="flex items-center gap-3 mb-8">
-        <div className="w-11 h-11 bg-gradient-to-br from-orange-500 to-pink-500 rounded-xl flex items-center justify-center shadow-md shadow-orange-200">
+        <div className="w-11 h-11 bg-gradient-to-br from-orange-500 to-clay-500 rounded-xl flex items-center justify-center shadow-md shadow-orange-200">
           <MessageSquare className="h-5 w-5 text-white" />
         </div>
         <div>
@@ -172,7 +172,7 @@ export default function ContactForm() {
         <button
           type="submit"
           disabled={status === "submitting"}
-          className="w-full bg-gradient-to-r from-orange-500 to-pink-500 text-white font-semibold px-8 py-4 rounded-full shadow-lg shadow-orange-200 hover:shadow-xl hover:shadow-orange-300 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full bg-gradient-to-r from-orange-500 to-clay-500 text-white font-semibold px-8 py-4 rounded-full shadow-lg shadow-orange-200 hover:shadow-xl hover:shadow-orange-300 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {status === "submitting" ? (
             <><Loader2 className="h-5 w-5 animate-spin" /> Sending…</>

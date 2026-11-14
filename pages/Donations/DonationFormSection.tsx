@@ -19,7 +19,7 @@ import { SponsorshipSection } from '@/components/SponsorshipSection';
 
 export function SponsorshipSectionWrapper() {
   return (
-    <section id="sponsor-child" className="bg-gradient-to-br from-blue-50 to-indigo-50 py-20">
+    <section id="sponsor-child" className="bg-gradient-to-br from-blue-50 to-leaf-50 py-20">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <SponsorshipSection />
       </div>

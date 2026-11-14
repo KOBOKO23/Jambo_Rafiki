@@ -94,9 +94,10 @@ export function Footer() {
                 </a>
               </li>
               <li className="flex items-center space-x-2">
-                <Phone className="h-5 w-5 text-orange-400 flex-shrink-0 cursor-pointer" />
+                <Phone className="h-5 w-5 text-orange-400 flex-shrink-0" />
+                {/* Number intentionally not displayed; the link dials it. */}
                 {callHref ? (
-                  <a href={callHref} className="sr-only">Call</a>
+                  <a href={callHref} className="hover:text-orange-400 transition-colors">Call us</a>
                 ) : null}
               </li>
               <li className="flex items-center space-x-2">

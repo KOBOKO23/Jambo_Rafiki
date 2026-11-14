@@ -4,26 +4,27 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Warm, brand-aligned tokens (used by the shadcn/ui primitives). */
+    --background: 40 33% 99%;
+    --foreground: 24 10% 10%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 24 10% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
+    --popover-foreground: 24 10% 10%;
+    --primary: 21 90% 48%;
+    --primary-foreground: 40 33% 99%;
+    --secondary: 30 33% 95%;
+    --secondary-foreground: 24 10% 10%;
+    --muted: 30 25% 95%;
+    --muted-foreground: 25 6% 40%;
+    --accent: 30 33% 95%;
+    --accent-foreground: 24 10% 10%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 40 33% 99%;
+    --border: 30 15% 88%;
+    --input: 30 15% 88%;
+    --ring: 21 90% 48%;
+    --radius: 0.75rem;
   }
 
   .dark {
@@ -53,8 +54,28 @@
   * {
     @apply border-border;
   }
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+  }
+  /* Headings: warm display serif with a real weight (Tailwind's preflight resets them to normal). */
+  h1, h2, h3 {
+    @apply font-display font-semibold tracking-tight text-gray-900;
+    font-optical-sizing: auto;
+    text-wrap: balance;
+  }
+  h4, h5, h6 {
+    @apply font-semibold;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  ::selection {
+    @apply bg-orange-200 text-gray-900;
   }
 }
 

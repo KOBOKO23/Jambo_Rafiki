@@ -66,7 +66,7 @@ export function AdminAccessGate({ children }: { children: React.ReactNode }) {
           <button
             type="button"
             onClick={() => window.location.reload()}
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 px-6 py-3 text-white font-semibold"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-orange-500 to-clay-500 px-6 py-3 text-white font-semibold"
           >
             <RefreshCcw className="h-4 w-4" />
             Retry

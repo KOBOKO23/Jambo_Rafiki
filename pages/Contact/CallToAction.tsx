@@ -11,23 +11,23 @@ export default function CallToAction() {
     <section className="relative bg-gray-950 overflow-hidden py-24">
 
       {/* Top accent bar */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500" />
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-clay-500 to-leaf-500" />
 
       {/* Background glow blobs */}
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-80 h-80 bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-80 h-80 bg-pink-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-80 h-80 bg-clay-500/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 
         {/* Icon */}
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-500 to-pink-500 rounded-2xl mb-6 shadow-xl shadow-orange-900/40">
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-500 to-clay-500 rounded-2xl mb-6 shadow-xl shadow-orange-900/40">
           <MessageSquare className="h-8 w-8 text-white" />
         </div>
 
         {/* Heading */}
         <h2 className="text-4xl font-bold text-white mb-5">
           We're Here to{" "}
-          <span className="bg-gradient-to-r from-orange-400 to-pink-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-orange-400 to-clay-400 bg-clip-text text-transparent">
             Answer Your Questions
           </span>
         </h2>
@@ -42,7 +42,7 @@ export default function CallToAction() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
           <a
             href={`mailto:${email}`}
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-pink-500 text-white font-semibold px-8 py-4 rounded-full shadow-lg shadow-orange-900/40 hover:shadow-xl hover:shadow-orange-900/60 hover:-translate-y-0.5 transition-all duration-200"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-clay-500 text-white font-semibold px-8 py-4 rounded-full shadow-lg shadow-orange-900/40 hover:shadow-xl hover:shadow-orange-900/60 hover:-translate-y-0.5 transition-all duration-200"
           >
             <Mail className="h-5 w-5" />
             Email Us Now
@@ -53,7 +53,7 @@ export default function CallToAction() {
               href={callHref}
               className="inline-flex items-center gap-2 border-2 border-white/20 text-white font-semibold px-8 py-4 rounded-full hover:bg-white/10 hover:border-white/40 transition-all duration-200"
             >
-              <Phone className="h-5 w-5 text-pink-400" />
+              <Phone className="h-5 w-5 text-clay-400" />
               Call Us
             </a>
           ) : null}
@@ -61,7 +61,7 @@ export default function CallToAction() {
             to="/contact"
             className="inline-flex items-center gap-2 border-2 border-white/20 text-white font-semibold px-8 py-4 rounded-full hover:bg-white/10 hover:border-white/40 transition-all duration-200"
           >
-            <Phone className="h-5 w-5 text-pink-400" />
+            <Phone className="h-5 w-5 text-clay-400" />
             Visit Contact Page
           </Link>
         </div>

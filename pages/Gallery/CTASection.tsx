@@ -1,48 +1,42 @@
 // pages/Gallery/CTASection.tsx
-import { Camera, Heart, ArrowRight } from "lucide-react";
+import { Link } from 'react-router-dom';
+import { ArrowRight, Heart } from 'lucide-react';
 
 export default function CTASection() {
   return (
-    <section className="relative bg-gray-950 overflow-hidden py-24">
-      {/* Top accent */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500" />
+    <section className="px-4 pb-20 pt-6 sm:px-6 lg:px-8">
+      <div className="relative mx-auto max-w-6xl overflow-hidden rounded-3xl bg-leaf-900 px-6 py-14 text-center sm:px-12 sm:py-16">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-orange-500/20 blur-3xl"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-leaf-500/30 blur-3xl"
+        />
 
-      {/* Background glow blobs */}
-      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-72 h-72 bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-72 h-72 bg-pink-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="relative mx-auto max-w-2xl">
+          <h2 className="text-3xl text-white sm:text-4xl">Come and see it for yourself</h2>
+          <p className="mt-4 text-lg leading-relaxed text-leaf-100/90">
+            Visitors are always welcome at Jambo Rafiki. Spend a day with the children, join a Sunday service, or help
+            us capture the next chapter of their story.
+          </p>
 
-      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-500 to-pink-500 rounded-2xl mb-6 shadow-xl shadow-orange-900/40">
-          <Camera className="h-8 w-8 text-white" />
-        </div>
-
-        <h2 className="text-4xl font-bold text-white mb-5">
-          Want to Visit and{" "}
-          <span className="bg-gradient-to-r from-orange-400 to-pink-400 bg-clip-text text-transparent">
-            Take Photos?
-          </span>
-        </h2>
-
-        <p className="text-lg text-gray-400 mb-10 leading-relaxed max-w-2xl mx-auto">
-          We welcome visitors who want to capture and share the joy at Jambo Rafiki.
-          Contact us to schedule a visit.
-        </p>
-
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <a
-            href="/contact"
-            className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 to-pink-500 text-white font-semibold px-8 py-4 rounded-full shadow-lg shadow-orange-900/40 hover:shadow-xl hover:shadow-orange-900/60 hover:-translate-y-0.5 transition-all duration-200"
-          >
-            Schedule a Visit <ArrowRight className="h-5 w-5" />
-          </a>
-          <a
-            href="/get-involved"
-            className="inline-flex items-center justify-center gap-2 border-2 border-white/20 text-white font-semibold px-8 py-4 rounded-full hover:bg-white/10 hover:border-white/40 transition-all duration-200"
-          >
-            <Heart className="h-5 w-5 text-pink-400" fill="currentColor" />
-            Support Our Children
-          </a>
+          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+            <Link
+              to="/contact"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-orange-500 px-7 py-3.5 font-semibold text-white shadow-lg shadow-black/20 transition hover:-translate-y-0.5 hover:bg-orange-400"
+            >
+              Plan a visit <ArrowRight className="h-5 w-5" aria-hidden="true" />
+            </Link>
+            <Link
+              to="/donations"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 px-7 py-3.5 font-semibold text-white transition hover:border-white/50 hover:bg-white/10"
+            >
+              <Heart className="h-5 w-5 text-orange-300" fill="currentColor" aria-hidden="true" />
+              Support the children
+            </Link>
+          </div>
         </div>
       </div>
     </section>

@@ -23,8 +23,8 @@ const PRIORITY = {
   High: {
     label: 'High',
     Icon: Flame,
-    pill: 'bg-rose-50 text-rose-600 border border-rose-100',
-    dot: 'bg-rose-500',
+    pill: 'bg-clay-50 text-clay-600 border border-clay-100',
+    dot: 'bg-clay-500',
   },
   Medium: {
     label: 'Medium',
@@ -45,9 +45,9 @@ export default function NeedsChallengesSection() {
     <section className="py-24 bg-white relative overflow-hidden">
 
       {/* Background decoration */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500" />
-      <div className="absolute -top-28 -right-28 w-80 h-80 bg-gradient-to-br from-orange-50 to-pink-50 rounded-full opacity-50 pointer-events-none" />
-      <div className="absolute -bottom-28 -left-28 w-72 h-72 bg-gradient-to-br from-purple-50 to-pink-50 rounded-full opacity-40 pointer-events-none" />
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-clay-500 to-leaf-500" />
+      <div className="absolute -top-28 -right-28 w-80 h-80 bg-gradient-to-br from-orange-50 to-clay-50 rounded-full opacity-50 pointer-events-none" />
+      <div className="absolute -bottom-28 -left-28 w-72 h-72 bg-gradient-to-br from-leaf-50 to-clay-50 rounded-full opacity-40 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
 
@@ -60,7 +60,7 @@ export default function NeedsChallengesSection() {
           <p className="text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed">
             Understanding what we need most helps you know exactly where your support will make the biggest difference.
           </p>
-          <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-pink-500 mx-auto mt-6 rounded-full" />
+          <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-clay-500 mx-auto mt-6 rounded-full" />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
@@ -96,7 +96,7 @@ export default function NeedsChallengesSection() {
                     className="group relative flex items-center justify-between gap-4 bg-white border-2 border-orange-50 rounded-2xl px-5 py-4 hover:border-orange-200 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 overflow-hidden"
                   >
                     {/* Hover wash */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-pink-500 opacity-0 group-hover:opacity-[0.03] transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-clay-500 opacity-0 group-hover:opacity-[0.03] transition-opacity duration-300" />
 
                     {/* Left accent */}
                     <div className={`absolute left-0 top-3 bottom-3 w-1 rounded-full ${p.dot} scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-center`} />
@@ -118,8 +118,8 @@ export default function NeedsChallengesSection() {
           {/* ── Challenges ── */}
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center">
-                <AlertCircle className="h-5 w-5 text-purple-500" />
+              <div className="w-10 h-10 bg-leaf-50 rounded-xl flex items-center justify-center">
+                <AlertCircle className="h-5 w-5 text-leaf-500" />
               </div>
               <div>
                 <h3 className="text-2xl font-bold text-gray-900">Challenges We Face</h3>
@@ -134,16 +134,16 @@ export default function NeedsChallengesSection() {
               {challenges.map((challenge, index) => (
                 <div
                   key={challenge}
-                  className="group relative flex items-start gap-4 bg-white border-2 border-purple-50 rounded-2xl px-5 py-5 hover:border-purple-200 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 overflow-hidden"
+                  className="group relative flex items-start gap-4 bg-white border-2 border-leaf-50 rounded-2xl px-5 py-5 hover:border-leaf-200 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 overflow-hidden"
                 >
                   {/* Hover wash */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-[0.03] transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-leaf-500 to-clay-500 opacity-0 group-hover:opacity-[0.03] transition-opacity duration-300" />
 
                   {/* Left accent */}
-                  <div className="absolute left-0 top-3 bottom-3 w-1 rounded-full bg-gradient-to-b from-purple-500 to-pink-500 scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-center" />
+                  <div className="absolute left-0 top-3 bottom-3 w-1 rounded-full bg-gradient-to-b from-leaf-500 to-clay-500 scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-center" />
 
                   {/* Number */}
-                  <span className="relative flex-shrink-0 w-7 h-7 bg-purple-50 rounded-lg flex items-center justify-center text-xs font-bold text-purple-500 group-hover:bg-purple-100 transition-colors">
+                  <span className="relative flex-shrink-0 w-7 h-7 bg-leaf-50 rounded-lg flex items-center justify-center text-xs font-bold text-leaf-500 group-hover:bg-leaf-100 transition-colors">
                     {String(index + 1).padStart(2, '0')}
                   </span>
 
@@ -153,7 +153,7 @@ export default function NeedsChallengesSection() {
             </div>
 
             {/* Bottom note */}
-            <div className="mt-6 bg-gradient-to-r from-orange-500 to-pink-500 rounded-2xl p-5 text-white">
+            <div className="mt-6 bg-gradient-to-r from-orange-500 to-clay-500 rounded-2xl p-5 text-white">
               <p className="text-sm font-semibold mb-1">Every contribution helps</p>
               <p className="text-white/80 text-xs leading-relaxed">
                 Whether financial, material, or in prayer — your support directly addresses these challenges and changes a child's future.

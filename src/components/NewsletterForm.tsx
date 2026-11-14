@@ -30,7 +30,7 @@ export function NewsletterForm() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-orange-500 to-pink-500 rounded-2xl p-8 text-white">
+    <div className="bg-gradient-to-br from-orange-500 to-clay-500 rounded-2xl p-8 text-white">
       <div className="flex items-center space-x-3 mb-4">
         <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
           <Mail className="h-6 w-6 text-white" />

@@ -184,7 +184,7 @@ export function BankTransferSection() {
                   <button
                     type="submit"
                     disabled={status === 'submitting'}
-                    className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 px-6 py-3 text-sm font-bold text-white shadow-md shadow-orange-100 transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-50 disabled:translate-y-0 disabled:cursor-not-allowed"
+                    className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 to-clay-500 px-6 py-3 text-sm font-bold text-white shadow-md shadow-orange-100 transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-50 disabled:translate-y-0 disabled:cursor-not-allowed"
                   >
                     {status === 'submitting' ? (
                       <><Loader2 className="h-4 w-4 animate-spin" /> Sending…</>

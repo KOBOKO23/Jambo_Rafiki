@@ -41,7 +41,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
             <button
               type="button"
               onClick={this.handleReload}
-              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-orange-500 to-pink-500 px-6 py-3 text-white font-semibold"
+              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-orange-500 to-clay-500 px-6 py-3 text-white font-semibold"
             >
               Reload Page
             </button>

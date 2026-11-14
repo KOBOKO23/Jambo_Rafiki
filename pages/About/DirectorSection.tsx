@@ -34,7 +34,7 @@ export default function DirectorSection() {
   const internationalImage = organization?.director_international_image_url || fallbackInternationalImage;
 
   return (
-    <section className="py-20 bg-gradient-to-br from-yellow-50 via-orange-50 to-pink-50">
+    <section className="py-20 bg-gradient-to-br from-yellow-50 via-orange-50 to-clay-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* ===== LOCAL DIRECTOR ===== */}
@@ -43,7 +43,7 @@ export default function DirectorSection() {
           {/* IMAGE */}
           <div className="flex justify-center lg:justify-start relative img-fade-in">
             <div className="relative">
-              <div className="absolute -inset-6 bg-gradient-to-br from-orange-100 to-pink-100 rounded-full blur-3xl opacity-25"></div>
+              <div className="absolute -inset-6 bg-gradient-to-br from-orange-100 to-clay-100 rounded-full blur-3xl opacity-25"></div>
 
               <img
                 src={executiveImage}
@@ -86,7 +86,7 @@ export default function DirectorSection() {
           {/* IMAGE */}
           <div className="flex justify-center lg:justify-start relative img-fade-in">
             <div className="relative">
-              <div className="absolute -inset-6 bg-gradient-to-br from-orange-100 to-pink-100 rounded-full blur-3xl opacity-25"></div>
+              <div className="absolute -inset-6 bg-gradient-to-br from-orange-100 to-clay-100 rounded-full blur-3xl opacity-25"></div>
 
               <img
                 src={internationalImage}

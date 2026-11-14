@@ -1,86 +1,31 @@
-import { useEffect, useState } from 'react';
-import { Heart, Users, Church, Target } from 'lucide-react';
-import { api } from '@/services/api';
+import { BadgeCheck, Heart, Home, MapPin } from 'lucide-react';
 
-type StatItem = {
-  number: string;
-  label: string;
-  icon: typeof Heart;
-};
+// Facts stated elsewhere on the site (About / Get Involved). Kept static so the
+// home page never shows "0" while the CMS is being populated.
+const FACTS = [
+  { value: '30', label: 'Children in our care', detail: 'Food, schooling, healthcare and a safe home', icon: Heart },
+  { value: '100', label: 'Children we are building for', detail: 'Our goal for a fully equipped home', icon: Home },
+  { value: 'Registered', label: 'With the Government of Kenya', detail: 'Department of Social Services', icon: BadgeCheck },
+  { value: 'Oyugis', label: 'Rooted in our community', detail: 'Church and children’s centre in Kenya', icon: MapPin },
+];
 
 export default function StatsSection() {
-  const [stats, setStats] = useState<StatItem[]>([
-    { number: '—', label: 'Children Profiles', icon: Heart },
-    { number: '—', label: 'Gallery Photos', icon: Target },
-    { number: '—', label: 'Community Voices', icon: Users },
-    { number: '—', label: 'Gallery Categories', icon: Church },
-  ]);
-
-  useEffect(() => {
-    let mounted = true;
-
-    async function loadStats() {
-      try {
-        const [children, photos, testimonials, categories] = await Promise.all([
-          api.sponsorships.getChildren(),
-          api.gallery.listPhotos('page=1&page_size=1'),
-          api.testimonials.listApproved(),
-          api.gallery.listCategories(),
-        ]);
-
-        if (!mounted) return;
-
-        const childrenCount = Array.isArray(children) ? children.length : 0;
-
-        // Safely resolve the categories count regardless of API shape:
-        //  - plain array          → categories.length
-        //  - { results: [...] }  → categories.results.length
-        //  - { count: N }        → categories.count
-        //  - undefined / null    → 0
-        function resolveCategoriesCount(raw: unknown): number {
-          if (Array.isArray(raw)) return raw.length;
-          if (raw != null && typeof raw === 'object') {
-            const obj = raw as Record<string, unknown>;
-            if (Array.isArray(obj['results'])) return (obj['results'] as unknown[]).length;
-            if (typeof obj['count'] === 'number') return obj['count'];
-          }
-          return 0;
-        }
-
-        let categoriesCount = resolveCategoriesCount(categories);
-
-        setStats([
-          { number: String(childrenCount),             label: 'Children Profiles',   icon: Heart  },
-          { number: String(photos?.count ?? 0),        label: 'Gallery Photos',      icon: Target },
-          { number: String(testimonials?.count ?? 0),  label: 'Community Voices',    icon: Users  },
-          { number: String(categoriesCount),           label: 'Gallery Categories',  icon: Church },
-        ]);
-      } catch {
-        // Keep placeholder dashes if any endpoint is temporarily unavailable
-      }
-    }
-
-    void loadStats();
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
   return (
-    <section className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-          {stats.map((stat) => (
-            <div key={stat.label} className="text-center group">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-400 to-pink-500 rounded-full mb-4 group-hover:scale-110 transition-transform">
-                <stat.icon className="h-8 w-8 text-white" />
-              </div>
-              <div className="text-4xl text-gray-900 font-bold mb-2">{stat.number}</div>
-              <div className="text-gray-600">{stat.label}</div>
-            </div>
-          ))}
-        </div>
+    <section className="relative z-10 -mt-10 px-4 sm:px-6 lg:px-8" aria-label="Jambo Rafiki at a glance">
+      <div className="mx-auto grid max-w-6xl grid-cols-2 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl shadow-gray-900/5 lg:grid-cols-4">
+        {FACTS.map(({ value, label, detail, icon: Icon }, i) => (
+          <div
+            key={label}
+            className={`flex flex-col gap-1 p-5 sm:p-7 ${i % 2 === 1 ? 'border-l border-gray-100' : ''} ${
+              i >= 2 ? 'border-t border-gray-100 lg:border-t-0' : ''
+            } ${i === 2 ? 'lg:border-l' : ''}`}
+          >
+            <Icon className="mb-2 h-5 w-5 text-orange-600" aria-hidden="true" />
+            <p className="font-display text-2xl font-semibold text-gray-900 sm:text-3xl">{value}</p>
+            <p className="text-sm font-medium text-gray-800">{label}</p>
+            <p className="hidden text-xs leading-relaxed text-gray-500 sm:block">{detail}</p>
+          </div>
+        ))}
       </div>
     </section>
   );

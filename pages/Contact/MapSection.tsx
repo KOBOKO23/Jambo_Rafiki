@@ -3,7 +3,7 @@ import { CONTACT_INFO } from '@/config/contact';
 
 export default function MapSection() {
   return (
-    <section className="py-20 bg-gradient-to-br from-orange-50 to-pink-50">
+    <section className="py-20 bg-gradient-to-br from-orange-50 to-clay-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-4xl text-gray-900 mb-4">Visit Us</h2>

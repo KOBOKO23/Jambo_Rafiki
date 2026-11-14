@@ -919,8 +919,13 @@ export const api = {
   },
 
   gallery: {
-    listCategories: async () => {
-      return requestJson<GalleryCategory[]>(API_PATHS.galleryCategories);
+    listCategories: async (): Promise<GalleryCategory[]> => {
+      // The backend paginates categories ({ count, results }); always hand callers a plain array.
+      const response = await requestJson<GalleryCategory[] | PaginatedResponse<GalleryCategory>>(
+        `${API_PATHS.galleryCategories}?page_size=100`
+      );
+      if (Array.isArray(response)) return response;
+      return Array.isArray(response?.results) ? response.results : [];
     },
 
     listPhotos: async (query = '') => {

@@ -28,7 +28,7 @@ export default function StorySection() {
 
           {/* RIGHT SIDE — IMAGE */}
           <div className="relative">
-            <div className="aspect-square bg-gradient-to-br from-orange-200 to-pink-200 rounded-2xl shadow-xl overflow-hidden">
+            <div className="aspect-square bg-gradient-to-br from-orange-200 to-clay-200 rounded-2xl shadow-xl overflow-hidden">
               <img
                 src="/images/IMG_0460.webp"
                 alt="Jambo Rafiki history"
@@ -38,7 +38,7 @@ export default function StorySection() {
 
             {/* Decorative blurred circles */}
             <div className="absolute -top-4 -right-4 w-20 h-20 bg-orange-300 rounded-full opacity-50 blur-xl"></div>
-            <div className="absolute -bottom-4 -left-4 w-28 h-28 bg-pink-300 rounded-full opacity-50 blur-xl"></div>
+            <div className="absolute -bottom-4 -left-4 w-28 h-28 bg-clay-300 rounded-full opacity-50 blur-xl"></div>
           </div>
 
         </div>

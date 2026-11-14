@@ -14,9 +14,9 @@ describe('Accessibility interactions', () => {
   it('opens and closes gallery lightbox with keyboard escape', async () => {
     render(
       <GalleryGrid
-        urls={[
-          'https://example-bucket.s3.amazonaws.com/gallery/one.jpg',
-          'https://example-bucket.s3.amazonaws.com/gallery/two.jpg',
+        items={[
+          { id: 1, url: 'https://example-bucket.s3.amazonaws.com/gallery/one.jpg', title: 'Morning assembly', description: '', categoryName: 'Children', dateTaken: '2026-01-10' },
+          { id: 2, url: 'https://example-bucket.s3.amazonaws.com/gallery/two.jpg', title: 'Sunday service', description: '', categoryName: 'Community', dateTaken: null },
         ]}
         loading={false}
         loadingMore={false}
@@ -27,13 +27,13 @@ describe('Accessibility interactions', () => {
       />
     );
 
-    const firstTile = await screen.findByRole('button', { name: /^open gallery image 1$/i });
+    const firstTile = await screen.findByRole('button', { name: /^open photo: morning assembly$/i });
     fireEvent.click(firstTile);
 
-    expect(await screen.findByRole('button', { name: /close gallery preview/i })).toBeInTheDocument();
+    expect(await screen.findByRole('button', { name: /close photo viewer/i })).toBeInTheDocument();
 
     fireEvent.keyDown(window, { key: 'Escape' });
 
-    expect(screen.queryByRole('button', { name: /close gallery preview/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /close photo viewer/i })).not.toBeInTheDocument();
   });
 });

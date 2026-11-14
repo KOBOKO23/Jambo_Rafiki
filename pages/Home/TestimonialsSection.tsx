@@ -57,7 +57,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
     <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col gap-5">
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-4">
-          <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-orange-300 to-pink-400 rounded-full flex items-center justify-center shadow-md">
+          <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-orange-300 to-clay-400 rounded-full flex items-center justify-center shadow-md">
             <Smile className="h-7 w-7 text-white" />
           </div>
           <div>
@@ -125,7 +125,7 @@ function SubmitModal({ onClose }: SubmitModalProps) {
         <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
 
           {/* Header */}
-          <div className="bg-gradient-to-r from-orange-500 to-pink-500 px-6 py-5 flex items-center justify-between">
+          <div className="bg-gradient-to-r from-orange-500 to-clay-500 px-6 py-5 flex items-center justify-between">
             <div>
               <h3 className="text-white font-bold text-lg">Share Your Experience</h3>
               <p className="text-white/70 text-sm">Your story inspires others to give</p>
@@ -230,7 +230,7 @@ function SubmitModal({ onClose }: SubmitModalProps) {
                 <button
                   type="submit"
                   disabled={status === 'submitting'}
-                  className="w-full bg-gradient-to-r from-orange-500 to-pink-500 text-white py-3 rounded-xl font-semibold text-sm shadow-md shadow-orange-200 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-r from-orange-500 to-clay-500 text-white py-3 rounded-xl font-semibold text-sm shadow-md shadow-orange-200 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 flex items-center justify-center gap-2"
                 >
                   {status === 'submitting' ? (
                     <><Loader2 className="h-4 w-4 animate-spin" /> Submitting…</>
@@ -294,7 +294,7 @@ export default function TestimonialsSection() {
   }, []);
 
   return (
-    <section className="bg-gradient-to-br from-orange-50 to-pink-50 py-20 relative">
+    <section className="bg-gradient-to-br from-orange-50 to-clay-50 py-20 relative">
       <div className="max-w-7xl mx-auto px-6">
 
         {/* Header */}
@@ -306,7 +306,7 @@ export default function TestimonialsSection() {
           <p className="text-xl text-gray-500 max-w-2xl mx-auto">
             Voices from our community and supporters
           </p>
-          <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-pink-500 mx-auto mt-5 rounded-full" />
+          <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-clay-500 mx-auto mt-5 rounded-full" />
         </div>
 
         {/* Grid */}
@@ -321,11 +321,21 @@ export default function TestimonialsSection() {
             ))}
           </div>
         ) : (
-          <div className="rounded-2xl border border-orange-100 bg-white/70 px-6 py-10 text-center">
-            <p className="text-sm font-medium text-gray-700">No approved testimonials yet.</p>
-            <p className="mt-2 text-sm text-gray-500">
-              {loadError || 'Be the first to share your story using the button below.'}
+          <div className="mx-auto flex max-w-2xl flex-col items-center rounded-2xl border border-orange-100 bg-white px-6 py-12 text-center shadow-sm">
+            <Quote className="mb-4 h-8 w-8 text-orange-300" aria-hidden="true" />
+            <p className="font-display text-2xl font-semibold text-gray-900">Has Jambo Rafiki touched your life?</p>
+            <p className="mt-2 max-w-md text-gray-600">
+              Visitors, sponsors, volunteers and church members: we&rsquo;d love to hear your story.
             </p>
+            <button
+              type="button"
+              onClick={() => setModalOpen(true)}
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-orange-600 px-6 py-3 font-semibold text-white transition hover:bg-orange-700"
+            >
+              <MessageSquarePlus className="h-5 w-5" aria-hidden="true" />
+              Share your story
+            </button>
+            {loadError && <span className="sr-only">{loadError}</span>}
           </div>
         )}
       </div>
@@ -333,7 +343,7 @@ export default function TestimonialsSection() {
       {/* Corner FAB */}
       <button
         onClick={() => setModalOpen(true)}
-        className="fixed bottom-6 right-6 z-40 flex items-center gap-2 bg-gradient-to-r from-orange-500 to-pink-500 text-white px-5 py-3.5 rounded-full shadow-xl shadow-orange-300 hover:shadow-2xl hover:shadow-orange-400 hover:-translate-y-1 transition-all duration-200 font-semibold text-sm"
+        className="fixed bottom-6 right-6 z-40 flex items-center gap-2 bg-gradient-to-r from-orange-500 to-clay-500 text-white px-5 py-3.5 rounded-full shadow-xl shadow-orange-300 hover:shadow-2xl hover:shadow-orange-400 hover:-translate-y-1 transition-all duration-200 font-semibold text-sm"
       >
         <MessageSquarePlus className="h-5 w-5" />
         Share Your Story

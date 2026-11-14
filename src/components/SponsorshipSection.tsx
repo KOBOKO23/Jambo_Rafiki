@@ -10,21 +10,21 @@ const impactStories = [
     title: 'Education Transforms',
     amount: 1000,
     impact: 'Feeds one child for a week',
-    color: 'from-blue-500 to-indigo-600',
+    color: 'from-blue-500 to-leaf-600',
   },
   {
     Icon: Gift,
     title: 'Learning Empowers',
     amount: 5000,
     impact: 'School supplies for one term',
-    color: 'from-orange-500 to-pink-600',
+    color: 'from-orange-500 to-clay-600',
   },
   {
     Icon: HandHeart,
     title: 'Health Matters',
     amount: 10000,
     impact: 'Medical care for one child',
-    color: 'from-purple-500 to-pink-600',
+    color: 'from-leaf-500 to-clay-600',
   },
 ];
 
@@ -40,7 +40,7 @@ export function ImpactStats({ onSelectAmount }: { onSelectAmount?: (amount: numb
           <p className="text-xl text-gray-500 max-w-3xl mx-auto">
             See how your donation directly transforms lives
           </p>
-          <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-pink-500 mx-auto mt-6 rounded-full" />
+          <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-clay-500 mx-auto mt-6 rounded-full" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -121,7 +121,7 @@ export function SponsorshipSection() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl mb-5 shadow-lg shadow-pink-200">
+          <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-clay-500 to-leaf-600 rounded-2xl mb-5 shadow-lg shadow-clay-200">
             <Heart className="h-7 w-7 text-white" fill="white" />
           </div>
           <h2 className="text-3xl font-bold text-gray-900 mb-3">Sponsor a Child</h2>
@@ -162,8 +162,8 @@ export function SponsorshipSection() {
                       onClick={() => setSelectedLevel(value)}
                       className={`flex flex-col items-center py-3 px-2 rounded-xl border-2 text-sm transition-all duration-200 ${
                         selectedLevel === value
-                          ? 'border-pink-500 bg-pink-50 text-pink-700'
-                          : 'border-gray-200 text-gray-600 hover:border-pink-300'
+                          ? 'border-clay-500 bg-clay-50 text-clay-700'
+                          : 'border-gray-200 text-gray-600 hover:border-clay-300'
                       }`}
                     >
                       <span className="font-semibold">{label}</span>
@@ -179,7 +179,7 @@ export function SponsorshipSection() {
                 onChange={handleChange}
                 required
                 placeholder="Full Name"
-                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-pink-500 outline-none text-gray-900 placeholder-gray-400 transition-colors"
+                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-clay-500 outline-none text-gray-900 placeholder-gray-400 transition-colors"
               />
               <input
                 name="email"
@@ -188,7 +188,7 @@ export function SponsorshipSection() {
                 onChange={handleChange}
                 required
                 placeholder="Email Address"
-                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-pink-500 outline-none text-gray-900 placeholder-gray-400 transition-colors"
+                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-clay-500 outline-none text-gray-900 placeholder-gray-400 transition-colors"
               />
               <input
                 name="phone"
@@ -196,7 +196,7 @@ export function SponsorshipSection() {
                 onChange={handleChange}
                 required
                 placeholder="Phone (+254…)"
-                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-pink-500 outline-none text-gray-900 placeholder-gray-400 transition-colors"
+                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-clay-500 outline-none text-gray-900 placeholder-gray-400 transition-colors"
               />
 
               {status === 'error' && (
@@ -209,7 +209,7 @@ export function SponsorshipSection() {
               <button
                 type="submit"
                 disabled={status === 'submitting'}
-                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 rounded-full font-semibold shadow-lg shadow-pink-200 hover:shadow-xl hover:shadow-pink-300 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full bg-gradient-to-r from-leaf-500 to-clay-500 text-white py-4 rounded-full font-semibold shadow-lg shadow-clay-200 hover:shadow-xl hover:shadow-clay-300 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {status === 'submitting' ? (
                   <><Loader2 className="h-5 w-5 animate-spin" /> Sending…</>

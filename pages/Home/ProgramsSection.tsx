@@ -1,112 +1,73 @@
 // ProgramsSection.tsx
-import { useEffect, useState } from 'react';
+// Three flagship programmes; the full list lives on /programs (pages/Programs/ProgramsGrid.tsx).
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
-import { api, type GalleryPhoto } from '@/services/api';
+import { ArrowRight, GraduationCap, Heart, Sprout } from 'lucide-react';
 
-type ProgramCard = {
-  id: number;
-  title: string;
-  description: string;
-  image: string;
-};
+const FEATURED_PROGRAMS = [
+  {
+    title: 'Children Ministries',
+    description: 'Psychosocial support, guidance and counselling for the holistic wellbeing of every child.',
+    image: '/images/happy.webp',
+    icon: Heart,
+  },
+  {
+    title: 'Education',
+    description: 'School fees, uniforms, books and academic support so every child can thrive in class.',
+    image: '/images/students.webp',
+    icon: GraduationCap,
+  },
+  {
+    title: 'Food Security',
+    description: 'Daily nutritious meals and a shamba where the children learn to grow their own food.',
+    image: '/images/IMG_0473.webp',
+    icon: Sprout,
+  },
+];
 
 export default function ProgramsSection() {
-  const [programs, setPrograms] = useState<ProgramCard[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    let mounted = true;
-
-    async function loadPrograms() {
-      try {
-        const response = await api.gallery.listPhotos('page=1&page_size=3');
-        if (!mounted) return;
-
-        const mapped: ProgramCard[] = response.results.slice(0, 3).map((item: GalleryPhoto) => ({
-          id: item.id,
-          title: item.category_name || item.title,
-          description: item.description || 'Managed from Gallery CMS content.',
-          image: item.image_url || item.image,
-        }));
-
-        setPrograms(mapped);
-      } catch {
-        if (mounted) {
-          setPrograms([]);
-        }
-      } finally {
-        if (mounted) {
-          setIsLoading(false);
-        }
-      }
-    }
-
-    void loadPrograms();
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
   return (
-    <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50">
-      <div className="max-w-7xl mx-auto px-6">
-        {/* Section Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Our Programs
-          </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Comprehensive care and support through our dedicated ministry programs
-          </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-pink-500 mx-auto mt-4"></div>
-        </div>
-
-        {/* Programs Grid */}
-        {isLoading ? (
-          <div className="rounded-2xl border border-blue-100 bg-white/70 px-6 py-10 text-center text-sm text-gray-500 mb-12">
-            Loading programs...
+    <section className="bg-gray-50 py-20 sm:py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div className="max-w-2xl">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-orange-600">What we do</p>
+            <h2 className="text-3xl sm:text-4xl">Care that reaches the whole child</h2>
+            <p className="mt-4 text-lg text-gray-600">
+              Through our church and children&rsquo;s centre we meet everyday needs and invest in each child&rsquo;s future.
+            </p>
           </div>
-        ) : programs.length > 0 ? (
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
-            {programs.map((program) => (
-              <div
-                key={program.id}
-                className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 group"
-              >
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <img
-                    src="/images/IMG_0471.webp"
-                    alt={program.title}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-
-                <div className="p-6">
-                  <h3 className="text-xl text-gray-900 mb-3">{program.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{program.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="rounded-2xl border border-blue-100 bg-white/70 px-6 py-10 text-center mb-12">
-            <p className="text-sm font-medium text-gray-700">No program media published yet.</p>
-            <p className="mt-2 text-sm text-gray-500">Upload photos in Gallery CMS and they will appear here automatically.</p>
-          </div>
-        )}
-
-        {/* View All Programs Link */}
-        <div className="text-center">
           <Link
             to="/programs"
-            className="inline-flex items-center text-orange-600 hover:text-orange-700 transition-colors"
+            className="inline-flex shrink-0 items-center gap-2 font-semibold text-orange-700 transition-colors hover:text-orange-800"
           >
-            View All Programs
-            <ArrowRight className="ml-2 h-5 w-5" />
+            All programmes <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-3">
+          {FEATURED_PROGRAMS.map(({ title, description, image, icon: Icon }) => (
+            <Link
+              key={title}
+              to="/programs"
+              className="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-gray-200 transition hover:-translate-y-1 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+            >
+              <div className="aspect-[4/3] overflow-hidden bg-gray-100">
+                <img
+                  src={image}
+                  alt=""
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              </div>
+              <div className="p-6">
+                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-orange-50 text-orange-600">
+                  <Icon className="h-5 w-5" aria-hidden="true" />
+                </div>
+                <h3 className="text-xl">{title}</h3>
+                <p className="mt-2 leading-relaxed text-gray-600">{description}</p>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </section>
